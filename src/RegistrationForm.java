@@ -1,23 +1,35 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.JFrame;
+import javax.swing.border.TitledBorder;
 
 public class RegistrationForm extends JPanel {
-
     private JTextField usernameField, emailField, phoneField;
     private JPasswordField passwordField, confirmPasswordField;
     private JComboBox<String> genderBox, courseBox;
     private Color lightBlue = new Color(52, 152, 219);
     private Color backgroundColor = new Color(245, 247, 250);
-
     public RegistrationForm() {
         setLayout(new GridBagLayout());
         setBackground(backgroundColor);
+        setVisible(true);
+
+        JPanel mainPanel = new JPanel();
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(
+            BorderFactory.createEtchedBorder(), "Registration Form"
+        );
+        mainPanel.setBorder(titledBorder);
+        mainPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        mainPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.GRAY, 1),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 8, 8, 8);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Username
+        // Usernme
         JLabel userLabel = new JLabel("Username:");
         gbc.gridx = 0; gbc.gridy = 0;
         add(userLabel, gbc);
@@ -61,7 +73,6 @@ public class RegistrationForm extends JPanel {
         genderBox = new JComboBox<>(new String[]{"Male", "Female"});
         gbc.gridx = 1;
         add(genderBox, gbc);
-
         // Phone
         JLabel phoneLabel = new JLabel("Phone:");
         gbc.gridx = 0; gbc.gridy = 5;
@@ -102,14 +113,15 @@ public class RegistrationForm extends JPanel {
                     JOptionPane.showMessageDialog(null, "All fields must be filled!");
                     return;
                 }
-
                 if(!password.equals(confirmPassword)) {
                     JOptionPane.showMessageDialog(null, "Passwords do not match!");
                     return;
                 }
-
                 JOptionPane.showMessageDialog(null, "Registration Successful!");
             }
         });
+    }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() ->new RegistrationForm());
     }
 }
