@@ -14,7 +14,6 @@ public class RegistrationForm extends JPanel {
         setLayout(new GridBagLayout());
         setBackground(backgroundColor);
         setVisible(true);
-
         JPanel mainPanel = new JPanel();
         TitledBorder titledBorder = BorderFactory.createTitledBorder(
             BorderFactory.createEtchedBorder(), "Registration Form"
@@ -42,11 +41,9 @@ public class RegistrationForm extends JPanel {
         JLabel emailLabel = new JLabel("Email:");
         gbc.gridx = 0; gbc.gridy = 1;
         add(emailLabel, gbc);
-
         emailField = new JTextField(20);
         gbc.gridx = 1;
         add(emailField, gbc);
-
         // Password
         JLabel passLabel = new JLabel("Password:");
         gbc.gridx = 0; gbc.gridy = 2;
@@ -96,9 +93,23 @@ public class RegistrationForm extends JPanel {
         submitButton.setBackground(lightBlue);
         submitButton.setForeground(Color.WHITE);
         gbc.gridx = 0; gbc.gridy = 7;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 1;
         add(submitButton, gbc);
-
+        JButton reset = new JButton("Reset");
+        reset.setBackground(Color.RED);
+        reset.setForeground(Color.WHITE);
+        gbc.gridx=100;gbc.gridy=7;
+        gbc.gridwidth= 1;
+        add(reset,gbc);
+reset.addActionListener(event->{
+        usernameField.setText("");
+        emailField.setText("");
+        genderBox.setSelectedIndex(0);
+        confirmPasswordField.setText("");
+         passwordField.setText("");
+             courseBox.setSelectedIndex(0);
+            phoneField.setText("");
+            });
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,7 +118,6 @@ public class RegistrationForm extends JPanel {
                 String password = new String(passwordField.getPassword()).trim();
                 String confirmPassword = new String(confirmPasswordField.getPassword()).trim();
                 String phone = phoneField.getText().trim();
-
                 if(username.isEmpty() || email.isEmpty() || password.isEmpty() ||
                         confirmPassword.isEmpty() || phone.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "All fields must be filled!");
