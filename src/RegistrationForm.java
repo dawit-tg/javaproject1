@@ -93,12 +93,12 @@ public class RegistrationForm extends JPanel {
         submitButton.setBackground(lightBlue);
         submitButton.setForeground(Color.WHITE);
         gbc.gridx = 0; gbc.gridy = 7;
-        gbc.gridwidth = 1;
+        gbc.gridwidth = 2;
         add(submitButton, gbc);
         JButton reset = new JButton("Reset");
         reset.setBackground(Color.RED);
         reset.setForeground(Color.WHITE);
-        gbc.gridx=100;gbc.gridy=7;
+        gbc.gridx=50;gbc.gridy=7;
         gbc.gridwidth= 1;
         add(reset,gbc);
 reset.addActionListener(event->{

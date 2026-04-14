@@ -21,6 +21,9 @@ public class index extends JFrame {
         JMenu homeMenu = new JMenu("Home");
         JMenu aboutMenu = new JMenu("About Us");
         JMenu contactMenu = new JMenu("Contact Us");
+        homeMenu.setForeground(Color.WHITE);
+        aboutMenu.setForeground(Color.WHITE);
+        contactMenu.setForeground(Color.WHITE);
         menuBar.add(homeMenu);
         menuBar.add(aboutMenu);
         menuBar.add(contactMenu);
