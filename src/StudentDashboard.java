@@ -17,14 +17,19 @@ class StudentDashboard extends JFrame {
         headerpanel = new JPanel(new BorderLayout());
         headerpanel.setBackground(new Color(44, 62, 80));
         headerpanel.setPreferredSize(new Dimension(1000, 80));
-
+        JButton backButton = new JButton("⬅");
+        headerpanel.add(backButton,BorderLayout.WEST);
+        backButton.addActionListener(e -> {
+            this.dispose();
+            index home = new index();
+            home.setVisible(true);
+        });
         JLabel title = new JLabel("Welcome to Student Dashboard "+ studentId);
         title.setForeground(Color.WHITE);
         title.setFont(new Font("Segoe UI", Font.BOLD, 26));
         headerpanel.add(title, BorderLayout.CENTER);
         title.setHorizontalAlignment(SwingConstants.CENTER);
        // title.setBorder(BorderFactory.createTitledBorder(BorderLayout.CENTER));
-
         // Profile Button
         JButton profileBtn = imageIcon();
         headerpanel.add(profileBtn, BorderLayout.EAST);

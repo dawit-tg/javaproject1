@@ -97,7 +97,6 @@ public class index extends JFrame {
             centerSection.revalidate();
             centerSection.repaint();
         });
-
         registerButton.addActionListener(e -> {
             centerSection.removeAll();
             centerSection.setLayout(new BorderLayout());
@@ -152,7 +151,7 @@ public class index extends JFrame {
             JTextField searchField = new JTextField("Search for courses...", 25);
             searchField.setPreferredSize(new Dimension(300, 40));
             searchField.setFont(new Font("Arial", Font.PLAIN, 14));
-            JButton btnSearch = new JButton("Search");
+            JButton btnSearch = new JButton("🔍");
             btnSearch.setBackground(lightBlue);
             btnSearch.setForeground(Color.WHITE);
             btnSearch.setPreferredSize(new Dimension(100, 40));
@@ -173,7 +172,6 @@ public class index extends JFrame {
           cardContainer.add(createModernCard("C++ Programming", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 225230.png", "Master C++ from basics to advanced."));
           cardContainer.add(createModernCard("Database System", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 225945.png", "Master database from basics to advanced."));
          cardContainer.add(createModernCard("NestJs Programming", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 225345.png", "Master nestjs from basic to advanced"));
-
         centerSection.add(heroPanel, BorderLayout.NORTH);
             centerSection.add(cardContainer, BorderLayout.CENTER);
             centerSection.revalidate();
@@ -201,7 +199,6 @@ public class index extends JFrame {
         centerSection.revalidate();
         centerSection.repaint();
     }
-
     // =========================
     // Contact Us Content
     // =========================

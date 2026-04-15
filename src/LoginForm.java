@@ -130,21 +130,3 @@ class LoginPage extends JFrame {
         SwingUtilities.invokeLater(() -> new LoginPage());
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

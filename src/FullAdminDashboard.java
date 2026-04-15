@@ -23,7 +23,6 @@ public class FullAdminDashboard extends JFrame {
         title.setFont(new Font("Segoe UI", Font.BOLD, 26));
         headerpanel.add(title, BorderLayout.CENTER);
         title.setHorizontalAlignment(SwingConstants.CENTER);
-
         // --- 1. Sidebar (ሜኑ) ---
         JPanel sidebar = new JPanel();
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
@@ -51,14 +50,13 @@ public class FullAdminDashboard extends JFrame {
         cardPanel.add(createStudentManagement(), "Student");
         cardPanel.add(createEnrollmentReport(), "Report");
 
-        // --- 3. Layout Assembly ---
+        // layout
         add(sidebar, BorderLayout.WEST);
         add(cardPanel, BorderLayout.CENTER);
 
         setVisible(true);
     }
-
-    // --- ገጽ 1: Dashboard Home (Stats) ---
+    // dashbord
     private JPanel createDashboardHome() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -75,28 +73,49 @@ public class FullAdminDashboard extends JFrame {
         panel.add(statsPanel, BorderLayout.CENTER);
         return panel;
     }
-
     // --- ገጽ 2: Course Management ---
     private JPanel createCourseManagement() {
-        JPanel panel = new JPanel(new BorderLayout(10, 10));
-        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
-       // panel.add(new JLabel("Course Management", new JLabel().getFont().deriveFont(20f)), BorderLayout.NORTH);
+        JPanel panel = new JPanel(new BorderLayout(10 , 10));
+        panel.setBorder(new EmptyBorder(20 , 20 , 20 , 20));
+        // panel.add(new JLabel("Course Management", new JLabel().getFont().deriveFont(20f)), BorderLayout.NORTH);
 
-        String[] cols = {"ID", "Course Name", "Duration", "Price"};
-        DefaultTableModel model = new DefaultTableModel(cols, 0);
-        model.addRow(new Object[]{"C1", "Java Programming", "3 Months", "2500 ETB"});
-        model.addRow(new Object[]{"C2", "React JS", "2 Months", "3000 ETB"});
-
-        panel.add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
+        String[] cols = {"ID" , "Course Name" , "Duration" , "Price"};
+        DefaultTableModel model = new DefaultTableModel(cols , 0);
+        model.addRow(new Object[]{"C1" , "Java Programming" , "3 Months" , "2500 ETB"});
+        model.addRow(new Object[]{"C2" , "React JS" , "2 Months" , "3000 ETB"});
+        panel.add(new JScrollPane(new JTable(model)) , BorderLayout.CENTER);
 
         JPanel btnPanel = new JPanel();
-        btnPanel.add(new JButton("Add New Course"));
-        btnPanel.add(new JButton("Edit Selected"));
-        btnPanel.add(new JButton("Delete Course"));
-        panel.add(btnPanel, BorderLayout.SOUTH);
-
+        JButton addd = new JButton("Add New Course");
+        btnPanel.add(addd);
+        JButton edit = new JButton("Edit Selected");
+        btnPanel.add(edit);
+        JButton delete= new JButton("Delete Course");
+        btnPanel.add(delete);
+      //  btnPanel.add(new JButton("Edit Selected"));
+      //  btnPanel.add(new JButton("Delete Course"));
+        //btnPanel.add(new JButton("Add New Course"));
+        panel.add(btnPanel , BorderLayout.SOUTH);
         return panel;
-    }
+        addd.addActionListener(event->{
+            JDialog cu= new JDialog();
+            cu.setLayout(new GridLayout(6,6,4,5));
+            JTextField id= new JTextField();
+            JTextField  name = new JTextField();
+            JTextField duration = new JTextField();
+            JTextField price= new JTextField();
+            JButton save = new JButton("Save Course");
+             cu.add(new JLabel(" ID"));
+             cu.add(id);
+             cu.add(new JLabel("Course Name"));
+                 cu.add(name);
+             cu.add(new JLabel("Duration"));
+             cu.add(duration);
+             cu.add(new JLabel("Price"));
+             cu.add(price);
+        });
+        save.addActionListener()
+
 
     // --- ገጽ 3: Student Management ---
     private JPanel createStudentManagement() {
