@@ -4,161 +4,253 @@ import java.awt.*;
 import javax.swing.border.EmptyBorder;
 
 public class FullAdminDashboard extends JFrame {
-    private JPanel cardPanel; // ገጾቹን ለመቀያየር
+    private JPanel cardPanel;
     private CardLayout cardLayout;
-    JPanel headerpanel;
-    private Color sidebarColor = new Color(44, 62, 80);
-    private Color activeColor = new Color(52, 152, 219);
+    private JPanel headerpanel;
+    private Color sidebarColor = new Color(44 , 62 , 80);
 
     public FullAdminDashboard() {
         setTitle("University Admin");
-        setSize(1100, 700);
+        setSize(1100 , 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        /// header
+        setLayout(new BorderLayout());
+
         headerpanel = new JPanel(new BorderLayout());
-        headerpanel.setPreferredSize(new Dimension(1000, 80));
-        JLabel title = new JLabel("Welcome to Admin Dashboard ");
+        headerpanel.setBackground(new Color(44 , 62 , 80));
+        headerpanel.setPreferredSize(new Dimension(0 , 70));
+        //admine profile or logo left side logo
+
+        ImageIcon originalIcon = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-20 113447.png");
+///  include circle
+        JLabel profileLabel = new JLabel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                int size = Math.min(getWidth(), getHeight());
+                g2.setClip(new java.awt.geom.Ellipse2D.Double(0, 0, size, size));
+                g2.drawImage(originalIcon.getImage(), 0, 0, size, size, this);
+                g2.dispose();
+            }
+        };
+        profileLabel.setPreferredSize(new Dimension(50, 50));
+        headerpanel.add(profileLabel, BorderLayout.WEST);
+
+
+        //right side logo
+        ImageIcon logo1 = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-20 113447.png");
+///  include circle
+        JLabel profiles = new JLabel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                int size = Math.min(getWidth(), getHeight());
+                g2.setClip(new java.awt.geom.Ellipse2D.Double(0, 0, size, size));
+                g2.drawImage(originalIcon.getImage(), 0, 0, size, size, this);
+                g2.dispose();
+            }
+        };
+        profiles.setPreferredSize(new Dimension(50, 50));
+        headerpanel.add(profiles, BorderLayout.EAST);
+
+
+
+        //header name
+        JLabel title = new JLabel("Welcome To Admin Dashboard");
         title.setForeground(Color.WHITE);
-        title.setFont(new Font("Segoe UI", Font.BOLD, 26));
-        headerpanel.add(title, BorderLayout.CENTER);
+        title.setFont(new Font("Segoe UI" , Font.BOLD , 22));
         title.setHorizontalAlignment(SwingConstants.CENTER);
-        // --- 1. Sidebar (ሜኑ) ---
+        headerpanel.add(title , BorderLayout.CENTER);
+
         JPanel sidebar = new JPanel();
-        sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
+        sidebar.setLayout(new BoxLayout(sidebar , BoxLayout.Y_AXIS));
         sidebar.setBackground(sidebarColor);
-        sidebar.setPreferredSize(new Dimension(220, 700));
+        sidebar.setPreferredSize(new Dimension(230 , 0));
+        sidebar.setBorder(new EmptyBorder(20 , 10 , 20 , 10));
 
-        JLabel logo = new JLabel("Admin");
-        logo.setForeground(Color.WHITE);
-        logo.setFont(new Font("Arial", Font.BOLD, 20));
-        logo.setBorder(new EmptyBorder(30, 20, 30, 20));
-        sidebar.add(logo);
+        JLabel lo = new JLabel("  ADMIN ");
+        lo.setForeground(Color.WHITE);
+        lo.setFont(new Font("Arial" , Font.BOLD , 18));
+        lo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        lo.setBorder(new EmptyBorder(10 , 0 , 30 , 0));
+        sidebar.add(lo);
 
-        sidebar.add(createMenuButton("Dashboard", "Dash"));
-        sidebar.add(createMenuButton("Manage Courses", "Course"));
-        sidebar.add(createMenuButton("Manage Students", "Student"));
-        sidebar.add(createMenuButton("Enrollment Reports", "Report"));
-        sidebar.add(Box.createVerticalGlue()); // ለትርፍ ቦታ
-        sidebar.add(createMenuButton("Logout", "Logout"));
-        // --- 2. Main Content Area (CardLayout) ---
+        sidebar.add(createMenuButton("Dashboard" , "Dash"));
+        sidebar.add(Box.createRigidArea(new Dimension(0 , 10)));
+        sidebar.add(createMenuButton("Manage Courses" , "Course"));
+        sidebar.add(Box.createRigidArea(new Dimension(0 , 10)));
+        sidebar.add(createMenuButton("Manage Students" , "Student"));
+        sidebar.add(Box.createRigidArea(new Dimension(0 , 10)));
+        sidebar.add(createMenuButton("Enrollment Reports" , "Report"));
+
+        sidebar.add(Box.createVerticalGlue());
+        /// =========================///
+        /// ====Logout action====
+        /// /========================///
+        JButton logout = createMenuButton("Logout" , "Logout");
+        logout.addActionListener(e ->{
+            int confirm = JOptionPane.showConfirmDialog(null ,
+                "Are you sure you want to logout?" , "Logout Confirmation" ,
+                JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                this.dispose();
+                new LoginPage().setVisible(true);
+            }
+        });
+        sidebar.add(logout);
+
+
+
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-
-        cardPanel.add(createDashboardHome(), "Dash");
-        cardPanel.add(createCourseManagement(), "Course");
-        cardPanel.add(createStudentManagement(), "Student");
-        cardPanel.add(createEnrollmentReport(), "Report");
-
-        // layout
-        add(sidebar, BorderLayout.WEST);
-        add(cardPanel, BorderLayout.CENTER);
-
-        setVisible(true);
+        cardPanel.setBackground(Color.WHITE);
+        cardPanel.add(createDashboardHome() , "Dash");
+        cardPanel.add(createCourseManagement() , "Course");
+        cardPanel.add(createStudentManagement() , "Student");
+        cardPanel.add(createEnrollmentReport() , "Report");
+        add(headerpanel , BorderLayout.NORTH);
+        add(sidebar , BorderLayout.WEST);
+        add(cardPanel , BorderLayout.CENTER);
     }
-    // dashbord
     private JPanel createDashboardHome() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel.setBorder(new EmptyBorder(25, 25, 25, 25));
+        panel.setBackground(new Color(245, 246, 250));
 
         JLabel title = new JLabel("System Overview");
         title.setFont(new Font("Arial", Font.BOLD, 24));
-        panel.add(title, BorderLayout.NORTH);
-
+        title.setBorder(new EmptyBorder(0, 0, 20, 0));
+        panel.add(title, BorderLayout.CENTER);
         JPanel statsPanel = new JPanel(new GridLayout(1, 3, 20, 0));
+        statsPanel.setOpaque(false);
         statsPanel.add(createStatBox("Total Students", "1,240", new Color(46, 204, 113)));
         statsPanel.add(createStatBox("Active Courses", "12", new Color(155, 89, 182)));
         statsPanel.add(createStatBox("New Requests", "8", new Color(241, 196, 15)));
-
         panel.add(statsPanel, BorderLayout.CENTER);
         return panel;
     }
-    // --- ገጽ 2: Course Management ---
+
     private JPanel createCourseManagement() {
-        JPanel panel = new JPanel(new BorderLayout(10 , 10));
-        panel.setBorder(new EmptyBorder(20 , 20 , 20 , 20));
-        // panel.add(new JLabel("Course Management", new JLabel().getFont().deriveFont(20f)), BorderLayout.NORTH);
-
-        String[] cols = {"ID" , "Course Name" , "Duration" , "Price"};
-        DefaultTableModel model = new DefaultTableModel(cols , 0);
-        model.addRow(new Object[]{"C1" , "Java Programming" , "3 Months" , "2500 ETB"});
-        model.addRow(new Object[]{"C2" , "React JS" , "2 Months" , "3000 ETB"});
-        panel.add(new JScrollPane(new JTable(model)) , BorderLayout.CENTER);
-
-        JPanel btnPanel = new JPanel();
-        JButton addd = new JButton("Add New Course");
-        btnPanel.add(addd);
-        JButton edit = new JButton("Edit Selected");
-        btnPanel.add(edit);
-        JButton delete= new JButton("Delete Course");
-        btnPanel.add(delete);
-      //  btnPanel.add(new JButton("Edit Selected"));
-      //  btnPanel.add(new JButton("Delete Course"));
-        //btnPanel.add(new JButton("Add New Course"));
-        panel.add(btnPanel , BorderLayout.SOUTH);
-        return panel;
-        addd.addActionListener(event->{
-            JDialog cu= new JDialog();
-            cu.setLayout(new GridLayout(6,6,4,5));
-            JTextField id= new JTextField();
-            JTextField  name = new JTextField();
-            JTextField duration = new JTextField();
-            JTextField price= new JTextField();
-            JButton save = new JButton("Save Course");
-             cu.add(new JLabel(" ID"));
-             cu.add(id);
-             cu.add(new JLabel("Course Name"));
-                 cu.add(name);
-             cu.add(new JLabel("Duration"));
-             cu.add(duration);
-             cu.add(new JLabel("Price"));
-             cu.add(price);
-        });
-        save.addActionListener()
-
-
-    // --- ገጽ 3: Student Management ---
-    private JPanel createStudentManagement() {
-        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        JPanel panel = new JPanel(new BorderLayout(15, 15));
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        String[] cols = {"ID", "Course Name", "Duration", "Price"};
+        DefaultTableModel model = new DefaultTableModel(cols, 0);
+        model.addRow(new Object[]{"C1", "Java Programming", "3 Months", "2500 ETB"});
+        model.addRow(new Object[]{"C2", "React JS", "2 Months", "3000 ETB"});
+
+        JTable table = new JTable(model);
+        table.setRowHeight(30);
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton addBtn = new JButton("Add New Course");
+        addBtn.setBackground(new Color(39, 174, 96));
+        addBtn.setForeground(Color.WHITE);
+        addBtn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        addBtn.setFocusPainted(false);
+        addBtn.setBorderPainted(false);
+        addBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        JButton edit = new JButton("Edit Selected");
+        edit.setBackground(new Color(41, 128, 185));
+        edit.setForeground(Color.WHITE);
+        edit.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        edit.setFocusPainted(false);
+        edit.setBorderPainted(false);
+        edit.setCursor(new Cursor(Cursor.HAND_CURSOR));
+      JButton delete = new JButton("Delete Course");
+        delete.setBackground(new Color(231, 76, 60));
+        delete.setForeground(Color.WHITE);
+        delete.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        delete.setFocusPainted(false);
+        delete.setBorderPainted(false);
+        delete.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        btnPanel.add(edit);
+        btnPanel.add(addBtn);
+      btnPanel.add(delete);
+      panel.add(btnPanel, BorderLayout.SOUTH);
+        return panel;
+    }
+    private JPanel createStudentManagement() {
+        JPanel panel = new JPanel(new BorderLayout(15, 15));
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+        JLabel title = new JLabel("Student Management");
+        title.setFont(new Font("Arial", Font.BOLD, 20));
+        panel.add(title, BorderLayout.NORTH);
 
         String[] cols = {"Student ID", "Full Name", "Email", "Status"};
         DefaultTableModel model = new DefaultTableModel(cols, 0);
         model.addRow(new Object[]{"S001", "Biruk T.", "biruk@email.com", "Active"});
-        model.addRow(new Object[]{"S002", "Kidist A.", "kidu@email.com", "Pending"});
+        model.addRow(new Object[]{"S002", "Kidist A.", "kidu@email.com", "Active"});
+        model.addRow(new Object[]{"S003", "Abebe C.", "abebe@email.com", "Blocked"});
 
-        panel.add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
-
-        JButton blockBtn = new JButton("Block / Unblock Student");
+        JTable table = new JTable(model);
+        table.setRowHeight(30);
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+        JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JButton blockBtn = new JButton("Toggle Block Status");
         blockBtn.setBackground(new Color(231, 76, 60));
         blockBtn.setForeground(Color.WHITE);
-        panel.add(blockBtn, BorderLayout.SOUTH);
 
+        blockBtn.addActionListener(e -> {
+            int row = table.getSelectedRow();
+            if(row != -1) {
+                String currentStatus = model.getValueAt(row, 3).toString();
+                String newStatus = currentStatus.equals("Active") ? "Blocked" : "Active";
+                model.setValueAt(newStatus, row, 3);
+            } else {
+                JOptionPane.showMessageDialog(this, "Please select a student first!");
+            }
+        });
+
+        actionPanel.add(blockBtn);
+        panel.add(actionPanel, BorderLayout.SOUTH);
         return panel;
     }
 
-    // --- ገጽ 4: Enrollment Reports ---
     private JPanel createEnrollmentReport() {
-        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        JPanel panel = new JPanel(new BorderLayout(15, 15));
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        String[] cols = {"Date", "Student", "Course", "Payment"};
+        JLabel title = new JLabel("Enrollment Reports");
+        title.setFont(new Font("Arial", Font.BOLD, 20));
+        panel.add(title, BorderLayout.NORTH);
+
+        String[] cols = {"Registration Date", "Student Name", "Course Name", "Payment Status"};
         DefaultTableModel model = new DefaultTableModel(cols, 0);
-        model.addRow(new Object[]{"2026-04-01", "Abebe B.", "Java", "Paid"});
-        model.addRow(new Object[]{"2026-04-02", "Sara M.", "Web Dev", "Pending"});
-        panel.add(new JScrollPane(new JTable(model)), BorderLayout.CENTER);
-        panel.add(new JButton("Download Report (PDF)"), BorderLayout.SOUTH);
+        model.addRow(new Object[]{"2026-04-10", "Biruk T.", "Java Programming", "Paid"});
+        model.addRow(new Object[]{"2026-04-12", "Kidist A.", "React JS", "Pending"});
+        model.addRow(new Object[]{"2026-04-15", "Abebe C.", "Java Programming", "Paid"});
+
+        JTable table = new JTable(model);
+        table.setRowHeight(30);
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+
+        JButton downloadBtn = new JButton("Download PDF Report");
+        downloadBtn.setBackground(new Color(52, 152, 219));
+        downloadBtn.setForeground(Color.WHITE);
+
+        downloadBtn.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "Generating PDF Report... Please Wait.");
+        });
+
+        panel.add(downloadBtn, BorderLayout.SOUTH);
         return panel;
     }
-    // --- Helper Methods (ዲዛይን ለማቅለል) ---
+
     private JButton createMenuButton(String text, String cardName) {
         JButton btn = new JButton(text);
-        btn.setMaximumSize(new Dimension(220, 45));
+        btn.setMaximumSize(new Dimension(210, 45));
         btn.setBackground(sidebarColor);
         btn.setForeground(Color.WHITE);
         btn.setFocusPainted(false);
         btn.setBorderPainted(false);
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         btn.addActionListener(e -> cardLayout.show(cardPanel, cardName));
         return btn;
@@ -169,12 +261,14 @@ public class FullAdminDashboard extends JFrame {
         box.setBackground(c);
         box.setBorder(new EmptyBorder(20, 20, 20, 20));
         JLabel t = new JLabel(title); t.setForeground(Color.WHITE);
-        JLabel v = new JLabel(val); v.setFont(new Font("Arial", Font.BOLD, 30)); v.setForeground(Color.WHITE);
+        JLabel v = new JLabel(val); v.setFont(new Font("Arial", Font.BOLD, 35)); v.setForeground(Color.WHITE);
         box.add(t); box.add(v);
         return box;
     }
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new FullAdminDashboard());
-        new FullAdminDashboard().setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            FullAdminDashboard frame = new FullAdminDashboard();
+            frame.setVisible(true);
+        });
     }
 }

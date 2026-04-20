@@ -2,6 +2,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.BoxLayout;
+import java.awt.Component;
+import javax.swing.JDialog;
 public class index extends JFrame {
     JPanel centerSection;
     Color darkBlue = new Color(33, 45, 62);
@@ -9,6 +12,8 @@ public class index extends JFrame {
     Color sidebarColor = new Color(44, 62, 80);
     Color backgroundColor = new Color(245, 247, 250);
     public index() {
+        ImageIcon mm = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\regi.png");
+        setIconImage(mm.getImage());
         setTitle("Online Course Registration System");
         setSize(1000, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,6 +35,24 @@ public class index extends JFrame {
         setJMenuBar(menuBar);
         menuBar.setBackground(new Color(44, 62, 80));
         menuBar.setForeground(Color.WHITE);
+        ////d===============
+       //dropdown menu
+         //      =============
+//        JMenuBar bar= new JMenuBar();
+//        JMenu m= new JMenu("Account");
+//        JMenuItem item= new JMenuItem("Login");
+//        JMenuItem item1= new JMenuItem("Register");
+//        m.add(item);
+//        m.add(item1);
+//        bar.add(m);
+//        setJMenuBar(bar);
+//        JButton btn= new JButton("Profile▼");
+//        JPopupMenu dd=new JPopupMenu();
+//        dd.add(new JMenuItem("Login")).addActionListener(event->showLogin());
+//        dd.add(new JMenuItem("Register")).addActionListener(event->showRegister());
+//        btn.addActionListener(event->{
+//         dd.show(btn,0,HEIGHT());
+//        });
         // =========================
         // Sidebar
         // =========================
@@ -42,17 +65,18 @@ public class index extends JFrame {
         sideTitle.setForeground(Color.WHITE);
         sideTitle.setFont(new Font("Arial", Font.BOLD, 22));
         sideTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JButton loginButton = new JButton("Login");
+        JButton login = new JButton("Login");
         JButton registerButton = new JButton("Registration");
-        styleButton(loginButton);
+        styleButton(login);
         styleButton(registerButton);
-        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        login.setAlignmentX(Component.CENTER_ALIGNMENT);
         registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         sideBar.add(sideTitle);
         sideBar.add(Box.createRigidArea(new Dimension(0, 40)));
-        sideBar.add(loginButton);
+        sideBar.add(login);
         sideBar.add(Box.createRigidArea(new Dimension(0, 20)));
         sideBar.add(registerButton);
+        sideBar.add(Box.createRigidArea(new Dimension(0, 15)));
         // =========================
         // Main Panel
         // =========================
@@ -90,10 +114,30 @@ public class index extends JFrame {
         // =========================
         // Button Actions
         // =========================
-        loginButton.addActionListener(e -> {
+//        CardLayout c= new CardLayout();
+//        JPanel centerSection= new JPanel(c);
+//       centerSection.add(homeMenu,"index");
+//        centerSection.add(new LoginPage(),"Login");
+//        loginButton.addActionListener(e -> {
+//            c.show(centerSection,"Login");
+//            });
+   //     login.addActionListener(e -> {
+//            JDialog loginDialog = new JDialog(this, "Login", true);
+//            loginDialog.setLayout(new BorderLayout());
+//            loginDialog.add(new LoginPage());
+//            loginDialog.setSize(400, 500);
+//            loginDialog.setLocationRelativeTo(this);
+//            loginDialog.setVisible(true);
+//            centerSection.add( new LoginPage());
+//           centerSection.revalidate();
+//            LoginPage log= new LoginPage();
+//            log.setVisible(true);
+//            log.setLocationRelativeTo(this);
+//        });
+        login.addActionListener(e -> {
             centerSection.removeAll();
             centerSection.setLayout(new BorderLayout());
-            centerSection.add(new LoginPage(), BorderLayout.CENTER);
+            centerSection.add( new LoginPage(), BorderLayout.CENTER);
             centerSection.revalidate();
             centerSection.repaint();
         });
@@ -132,20 +176,21 @@ public class index extends JFrame {
     // =========================
     public void showHomeContent() {
         centerSection.removeAll();
-        centerSection.setLayout(new BoxLayout(centerSection, BoxLayout.Y_AXIS));
+        centerSection.setLayout(new BoxLayout(centerSection , BoxLayout.Y_AXIS));
         JLabel title = new JLabel("Learn & Grow with Our Courses");
-        title.setFont(new Font("Arial", Font.BOLD, 42));
+        title.setFont(new Font("Arial" , Font.BOLD , 42));
         title.setForeground(darkBlue);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         // Image panel
         JPanel imagePanel = new JPanel();
         imagePanel.setBackground(backgroundColor);
-        imagePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 10));
-            // --- 1. Hero & Search Section ---
-            JPanel heroPanel = new JPanel();
-            heroPanel.setLayout(new BoxLayout(heroPanel, BoxLayout.Y_AXIS));
-            heroPanel.setOpaque(false);
-            // Search Bar Panel
+        imagePanel.setLayout(new FlowLayout(FlowLayout.CENTER , 20 , 10));
+        // --- 1. Hero & Search Section ---
+        JPanel heroPanel = new JPanel();
+        heroPanel.setLayout(new BoxLayout(heroPanel , BoxLayout.Y_AXIS));
+        heroPanel.setOpaque(false);
+
+        // Search Bar Panel
             JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
             searchPanel.setOpaque(false);
             JTextField searchField = new JTextField("Search for courses...", 25);
@@ -185,7 +230,6 @@ public class index extends JFrame {
         JLabel aboutTitle = new JLabel("About Us");
         aboutTitle.setFont(new Font("Arial", Font.BOLD, 24));
         aboutTitle.setForeground(darkBlue);
-
         JTextArea aboutText = new JTextArea();
         aboutText.setText(
                 "Our Online Course Registration System is designed to help students register for courses easily and quickly.\n\n"
@@ -228,12 +272,23 @@ public class index extends JFrame {
     // Button Style
     // =========================
     public void styleButton(JButton button) {
-        button.setBackground(lightBlue);
+        button.setBackground(new Color(52 , 152 , 219));
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
-        button.setFont(new Font("Arial", Font.BOLD, 16));
-        button.setMaximumSize(new Dimension(180, 45));
+        button.setFont(new Font("Segoe UI" , Font.BOLD , 15));
+        button.setBorder(BorderFactory.createEmptyBorder(12 , 20 , 12 , 20));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        button.setMaximumSize(new Dimension(180 , 45));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(new Color(41 , 128 , 185));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(new Color(52 , 152 , 219));
+            }
+        });
     }
     // =========================
     // TextArea Style

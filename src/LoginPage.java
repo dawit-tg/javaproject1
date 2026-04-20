@@ -3,20 +3,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Image;
-class LoginPage extends JFrame {
+class LoginPage extends JPanel {
     public LoginPage() {
-//        String photo = "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-03-17 152841.png";
-//        ImageIcon originalIcon = new ImageIcon(getClass().getResource(photo));
-        ImageIcon bt= new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-03-17 152841.png");
-        setIconImage(bt.getImage());
-        setTitle("User Login System");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setMinimumSize(new Dimension(400 , 500));
-        JPanel mainPanel = new JPanel(new GridBagLayout());
-//        mainPanel.add(headerpanel);
-        //mainPanel.setBackground( new Color(44, 62, 80));
-        mainPanel.setBackground(new Color(173, 216, 230));
+       // ImageIcon bt= new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-03-17 152841.png");
+//        setIconImage(bt.getImage());
+       JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new GridBagLayout());
+        mainPanel.setBackground(Color.WHITE);
+        mainPanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
+            BorderFactory.createEmptyBorder(30, 40, 30, 40)
+        ));
         JPanel panel = new JPanel();
         panel.setLayout(null);
         panel.setPreferredSize(new Dimension(380 , 480));
@@ -42,39 +39,33 @@ class LoginPage extends JFrame {
         passwordField.setBounds(40 , 205 , 270 , 35);
         passwordField.setBorder(BorderFactory.createLineBorder(new Color(51 , 204 , 255)));
         panel.add(passwordField);
-        JButton forget= new JButton("forgotPassword");
-        forget.setContentAreaFilled(false);
-        forget.setBorderPainted(false);
-        forget.setForeground(Color.yellow);
-        forget.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        panel.add(forget);
+//        JButton forget= new JButton("forgotPassword");
+//        forget.setContentAreaFilled(false);
+//        forget.setBorderPainted(false);
+//        forget.setForeground(Color.yellow);
+//        forget.setCursor(new Cursor(Cursor.HAND_CURSOR));
+//        panel.add(forget);
         // Login Button
         JButton button = new JButton("Login");
         button.setBounds(40 , 270 , 270 , 40);
-        button.setBackground(new Color(70 , 190 , 230));
-        button.setBackground(new Color(0 , 204 , 255));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial" , Font.BOLD , 14));
+        button.setBackground(new Color(46, 204, 113));
+        button.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         panel.add(button);
         JLabel re = new JLabel("Register Now" , SwingConstants.CENTER);
         re.setBounds(0 , 350 , 350 , 20);
         re.setForeground(new Color(0 , 102 , 204));
         re.setCursor(new Cursor(Cursor.HAND_CURSOR));
         panel.add(re);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.insets = new Insets(0 , 0 , 20 , 0);
-        JLabel topTitle = new JLabel("OnlineCOurse Registration");
-        topTitle.setFont(new Font("Arial" , Font.BOLD , 50));
-        topTitle.setForeground(Color.RED);
-        mainPanel.add(topTitle , gbc);
-        gbc.gridy = 1;
-        mainPanel.add(panel , gbc);
         add(mainPanel);
+        mainPanel.add(panel);
         setVisible(true);
+//        this.setLayout(new GridLayout());
+//        this.setBackground(new Color(245, 247, 250));
+//        this.add(mainPanel);
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -84,12 +75,12 @@ class LoginPage extends JFrame {
                     JOptionPane.showMessageDialog(null , "Welcome Admin");
                     FullAdminDashboard dash1=new FullAdminDashboard();
                     dash1.setVisible(true);
-                    LoginPage.this.dispose();
+//                    LoginPage.this.dispose();
                 } else if (username.equals("Biruk") && inputPass.equals("b123")) {
                     JOptionPane.showMessageDialog(null , "welcame User");
                     StudentDashboard dash = new StudentDashboard(username);
                     dash.setVisible(true);
-                    LoginPage.this.dispose();
+//                    LoginPage.this.dispose();
                 } else if(username.isEmpty() || inputPass.isEmpty()) {
                     JOptionPane.showMessageDialog(null , "username and password field");
                 }else{
@@ -98,7 +89,7 @@ class LoginPage extends JFrame {
             }
         });
     }
-//      forget.addActionListener(e->{
+    //      forget.addActionListener(e->{
 //          @Override
 //    private void handleForgotPassword() {
 //        String user = JOptionPane.showInputDialog(this, "Enter Username:");
