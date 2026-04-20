@@ -2,7 +2,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import javax.swing.border.EmptyBorder;
-
 public class FullAdminDashboard extends JFrame {
     private JPanel cardPanel;
     private CardLayout cardLayout;
@@ -37,7 +36,6 @@ public class FullAdminDashboard extends JFrame {
         profileLabel.setPreferredSize(new Dimension(50, 50));
         headerpanel.add(profileLabel, BorderLayout.WEST);
 
-
         //right side logo
         ImageIcon logo1 = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-20 113447.png");
 ///  include circle
@@ -54,9 +52,6 @@ public class FullAdminDashboard extends JFrame {
         };
         profiles.setPreferredSize(new Dimension(50, 50));
         headerpanel.add(profiles, BorderLayout.EAST);
-
-
-
         //header name
         JLabel title = new JLabel("Welcome To Admin Dashboard");
         title.setForeground(Color.WHITE);
@@ -101,8 +96,6 @@ public class FullAdminDashboard extends JFrame {
         });
         sidebar.add(logout);
 
-
-
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
         cardPanel.setBackground(Color.WHITE);
@@ -135,11 +128,14 @@ public class FullAdminDashboard extends JFrame {
     private JPanel createCourseManagement() {
         JPanel panel = new JPanel(new BorderLayout(15, 15));
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
-
         String[] cols = {"ID", "Course Name", "Duration", "Price"};
         DefaultTableModel model = new DefaultTableModel(cols, 0);
         model.addRow(new Object[]{"C1", "Java Programming", "3 Months", "2500 ETB"});
         model.addRow(new Object[]{"C2", "React JS", "2 Months", "3000 ETB"});
+        model.addRow(new Object[]{"C3", "C++ Programming", "5 Months", "2500 ETB"});
+        model.addRow(new Object[]{"C5", "Nest JS", "2 Months", "3000 ETB"});
+        model.addRow(new Object[]{"C6", "Phytone Programming", "3 Months", "4500 ETB"});
+        model.addRow(new Object[]{"C7", "Web Design", "2 Months", "5000 ETB"});
 
         JTable table = new JTable(model);
         table.setRowHeight(30);
@@ -167,11 +163,10 @@ public class FullAdminDashboard extends JFrame {
         delete.setFocusPainted(false);
         delete.setBorderPainted(false);
         delete.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
         btnPanel.add(edit);
         btnPanel.add(addBtn);
-      btnPanel.add(delete);
-      panel.add(btnPanel, BorderLayout.SOUTH);
+        btnPanel.add(delete);
+        panel.add(btnPanel, BorderLayout.SOUTH);
         return panel;
     }
     private JPanel createStudentManagement() {
@@ -180,8 +175,7 @@ public class FullAdminDashboard extends JFrame {
 
         JLabel title = new JLabel("Student Management");
         title.setFont(new Font("Arial", Font.BOLD, 20));
-        panel.add(title, BorderLayout.NORTH);
-
+        panel.add(title, BorderLayout.CENTER);
         String[] cols = {"Student ID", "Full Name", "Email", "Status"};
         DefaultTableModel model = new DefaultTableModel(cols, 0);
         model.addRow(new Object[]{"S001", "Biruk T.", "biruk@email.com", "Active"});
@@ -206,7 +200,6 @@ public class FullAdminDashboard extends JFrame {
                 JOptionPane.showMessageDialog(this, "Please select a student first!");
             }
         });
-
         actionPanel.add(blockBtn);
         panel.add(actionPanel, BorderLayout.SOUTH);
         return panel;
@@ -218,7 +211,7 @@ public class FullAdminDashboard extends JFrame {
 
         JLabel title = new JLabel("Enrollment Reports");
         title.setFont(new Font("Arial", Font.BOLD, 20));
-        panel.add(title, BorderLayout.NORTH);
+        panel.add(title, BorderLayout.CENTER);
 
         String[] cols = {"Registration Date", "Student Name", "Course Name", "Payment Status"};
         DefaultTableModel model = new DefaultTableModel(cols, 0);
@@ -255,7 +248,6 @@ public class FullAdminDashboard extends JFrame {
         btn.addActionListener(e -> cardLayout.show(cardPanel, cardName));
         return btn;
     }
-
     private JPanel createStatBox(String title, String val, Color c) {
         JPanel box = new JPanel(new GridLayout(2, 1));
         box.setBackground(c);

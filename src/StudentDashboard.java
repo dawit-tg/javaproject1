@@ -56,13 +56,35 @@ class StudentDashboard extends JFrame {
         headerpanel = new JPanel(new BorderLayout());
         headerpanel.setBackground(new Color(44, 62, 80));
         headerpanel.setPreferredSize(new Dimension(800, 85));
-        JButton backButton = new JButton("⬅");
-        headerpanel.add(backButton, BorderLayout.WEST);
-        backButton.addActionListener(e -> {
-            this.dispose();
-            // index home = new index();
-            // home.setVisible(true);
+        ///logo
+        ImageIcon logo = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-20 113447.png");
+        JLabel profile = new JLabel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING , RenderingHints.VALUE_ANTIALIAS_ON);
+                int size = Math.min(getWidth() , getHeight());
+                g2.setClip(new java.awt.geom.Ellipse2D.Double(0 , 0 , size , size));
+                g2.drawImage(logo.getImage() , 0 , 0 , size , size , this);
+                g2.dispose();
+            }
+        };
+        profile.setPreferredSize(new Dimension(50 , 50));
+        headerpanel.add(profile , BorderLayout.WEST);
+        profile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                new index().setVisible(true);
+            }
         });
+
+//
+//        JButton backButton = new JButton("⬅");
+//        headerpanel.add(backButton, BorderLayout.WEST);
+//        backButton.addActionListener(e -> {
+//            this.dispose();
+//            // index home = new index();
+//            // home.setVisible(true);
+//        });
 
         //center
         JPanel titleSearchPanel = new JPanel(new GridLayout(2, 1));
@@ -104,8 +126,7 @@ class StudentDashboard extends JFrame {
 
         headerpanel.add(rightInfoPanel, BorderLayout.EAST);
         add(headerpanel, BorderLayout.NORTH);
-
-        // --- Sidebar (የኢሞጂ ከለር ተስተካክሏል) ---
+        // --- Sidebar
         sidebar = new JPanel();
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
         sidebar.setBackground(new Color(52, 73, 94));
@@ -128,7 +149,6 @@ class StudentDashboard extends JFrame {
             sidebar.add(btn);
         }
         add(sidebar, BorderLayout.WEST);
-
         cardLayout = new CardLayout();
         mainContent = new JPanel(cardLayout);
         mainContent.add(createDashboardPanel(), "Dashboard");
@@ -137,8 +157,6 @@ class StudentDashboard extends JFrame {
         mainContent.add(createSettingsPanel() ,"Settings");
         add(mainContent, BorderLayout.CENTER);
     }
-
-
 
     private JPanel createSettingsPanel() {
         JPanel panel = new JPanel(new BorderLayout());
@@ -150,11 +168,11 @@ class StudentDashboard extends JFrame {
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         content.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
         content.setBackground(Color.WHITE);
-
+        content.setAlignmentX(Component.CENTER_ALIGNMENT);
         // 1. title
         JLabel title = new JLabel("Account Settings");
         title.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
         content.add(title);
         content.add(Box.createRigidArea(new Dimension(0, 30)));
 
@@ -167,23 +185,19 @@ class StudentDashboard extends JFrame {
 
         // 3. Change Password Section
         content.add(createSubTitle("Security & Password"));
-
         content.add(new JLabel("Current Password"));
         JPasswordField oldPass = new JPasswordField();
         oldPass.setMaximumSize(new Dimension(400, 35));
         content.add(oldPass);
-
         content.add(Box.createRigidArea(new Dimension(0, 10)));
-
         content.add(new JLabel("New Password"));
         JPasswordField newPass = new JPasswordField();
         newPass.setMaximumSize(new Dimension(400, 35));
         content.add(newPass);
         content.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // 4. Preferences (ምርጫዎች)
+        // 4. Preferences
         content.add(createSubTitle("Preferences"));
-
         JCheckBox emailNotify = new JCheckBox("Receive Email Notifications");
         emailNotify.setBackground(Color.WHITE);
         content.add(emailNotify);
@@ -210,7 +224,7 @@ class StudentDashboard extends JFrame {
         panel.add(new JScrollPane(content), BorderLayout.CENTER);
         return panel;
     }
-    // ለንዑስ ርዕሶች የሚሆን አጋዥ ሜተድ
+    //
     private JLabel createSubTitle(String text) {
         JLabel sub = new JLabel(text);
         sub.setFont(new Font("Segoe UI", Font.BOLD, 18));

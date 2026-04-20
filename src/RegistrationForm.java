@@ -15,15 +15,13 @@ public class RegistrationForm extends JPanel {
         setBackground(backgroundColor);
         setVisible(true);
         JPanel mainPanel = new JPanel();
-        TitledBorder titledBorder = BorderFactory.createTitledBorder(
-            BorderFactory.createEtchedBorder(), "Registration Form"
-        );
-        mainPanel.setBorder(titledBorder);
-        mainPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        mainPanel.setBackground(Color.WHITE);;
         mainPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(Color.GRAY, 1),
-            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+            BorderFactory.createLineBorder(new Color(220, 220, 220), 1), // ውጫዊ መስመር
+            BorderFactory.createEmptyBorder(30, 40, 30, 40) // ውስጣዊ ክፍተት
         ));
+        mainPanel.setLayout(new GridBagLayout());
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 8, 8, 8);
         gbc.fill = GridBagConstraints.HORIZONTAL;
