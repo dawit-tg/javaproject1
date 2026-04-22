@@ -57,7 +57,7 @@ class StudentDashboard extends JFrame {
         headerpanel.setBackground(new Color(44, 62, 80));
         headerpanel.setPreferredSize(new Dimension(800, 85));
         ///logo
-        ImageIcon logo = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-20 113447.png");
+        ImageIcon logo = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-21 233222.png");
         JLabel profile = new JLabel() {
             @Override
             protected void paintComponent(Graphics g) {

@@ -57,7 +57,7 @@ public class index extends JFrame {
         centerSection.setBorder(new EmptyBorder(30 , 40 , 30 , 40));
         showHomeContent();
         ///logo
-        ImageIcon logo = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-20 113447.png");
+        ImageIcon logo = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-21 233222.png");
         JLabel profile = new JLabel() {
             @Override
             protected void paintComponent(Graphics g) {

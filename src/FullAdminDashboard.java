@@ -7,21 +7,17 @@ public class FullAdminDashboard extends JFrame {
     private CardLayout cardLayout;
     private JPanel headerpanel;
     private Color sidebarColor = new Color(44 , 62 , 80);
-
     public FullAdminDashboard() {
         setTitle("University Admin");
         setSize(1100 , 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-
         headerpanel = new JPanel(new BorderLayout());
         headerpanel.setBackground(new Color(44 , 62 , 80));
         headerpanel.setPreferredSize(new Dimension(0 , 70));
         //admine profile or logo left side logo
-
         ImageIcon originalIcon = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-20 113447.png");
-///  include circle
         JLabel profileLabel = new JLabel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -35,23 +31,6 @@ public class FullAdminDashboard extends JFrame {
         };
         profileLabel.setPreferredSize(new Dimension(50, 50));
         headerpanel.add(profileLabel, BorderLayout.WEST);
-
-        //right side logo
-        ImageIcon logo1 = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-20 113447.png");
-///  include circle
-        JLabel profiles = new JLabel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                int size = Math.min(getWidth(), getHeight());
-                g2.setClip(new java.awt.geom.Ellipse2D.Double(0, 0, size, size));
-                g2.drawImage(originalIcon.getImage(), 0, 0, size, size, this);
-                g2.dispose();
-            }
-        };
-        profiles.setPreferredSize(new Dimension(50, 50));
-        headerpanel.add(profiles, BorderLayout.EAST);
         //header name
         JLabel title = new JLabel("Welcome To Admin Dashboard");
         title.setForeground(Color.WHITE);
@@ -77,10 +56,104 @@ public class FullAdminDashboard extends JFrame {
         sidebar.add(createMenuButton("Manage Courses" , "Course"));
         sidebar.add(Box.createRigidArea(new Dimension(0 , 10)));
         sidebar.add(createMenuButton("Manage Students" , "Student"));
-        sidebar.add(Box.createRigidArea(new Dimension(0 , 10)));
+//        sidebar.add(Box.createRigidArea(new Dimension(0 , 10)));
+//        sidebar.add(createMenuButton("Manage Instructor","Instructor"));
+//        sidebar.add(Box.createRigidArea(new Dimension(0 , 10)));
+//        sidebar.add(createMenuButton("Payment/Finance","Payment"));
+//        sidebar.add(Box.createRigidArea(new Dimension(0 , 10)));
         sidebar.add(createMenuButton("Enrollment Reports" , "Report"));
-
         sidebar.add(Box.createVerticalGlue());
+        //right side logo
+        ImageIcon logo1 = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\birukk.png");
+        JLabel profiles = new JLabel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                int size = Math.min(getWidth(), getHeight());
+                g2.setClip(new java.awt.geom.Ellipse2D.Double(0, 0, size, size));
+                g2.drawImage(originalIcon.getImage(), 0, 0, size, size, this);
+                g2.dispose();
+            }
+        };
+        profiles.setPreferredSize(new Dimension(50, 50));
+        headerpanel.add(profiles, BorderLayout.EAST);
+        JPopupMenu men=new JPopupMenu();
+        JMenuItem  profile=new JMenuItem("Profiles");
+        JMenuItem  setting=new JMenuItem("Setting");
+        JMenuItem  Year=new JMenuItem("ACadamic Year");
+        men.add(profile);
+        men.add(setting);
+        men.add(Year);
+        profiles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                men.show(profiles , 0 , profiles.getHeight());
+            }
+        });
+        //  Academic Year
+        Year.addActionListener(e -> {
+            String newYear = JOptionPane.showInputDialog(this,
+                "Enter New Academic Year (e.g. 2018 E.C):",
+                "Academic Year Update",
+                JOptionPane.QUESTION_MESSAGE);
+            if (newYear != null && !newYear.trim().isEmpty()) {
+                title.setText("Welcome To Admin Dashboard - " + newYear);
+                JOptionPane.showMessageDialog(this, "Academic Year updated to: " + newYear);
+            }
+        });
+        //setting item work
+        setting.addActionListener(e -> {
+            // Create a custom dialog for settings
+            JDialog settingsDialog = new JDialog(this, "System Settings", true);
+            settingsDialog.setSize(350, 250);
+            settingsDialog.setLayout(new GridLayout(4, 1, 10, 10));
+            settingsDialog.setLocationRelativeTo(this);
+            //  Name Field
+            JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            namePanel.add(new JLabel("Institution Name: "));
+            JTextField nameField = new JTextField("Admin", 15);
+            namePanel.add(nameField);
+            // Theme Selector (Optional Example)
+            JPanel themePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            themePanel.add(new JLabel("System Theme: "));
+            themePanel.add(new JComboBox<>(new String[]{"Dark Blue", "Light Gray", "Classic"}));
+            // Save Button
+            JButton saveBtn = new JButton("Save Changes");
+            saveBtn.setBackground(sidebarColor);
+            saveBtn.setForeground(Color.WHITE);
+            saveBtn.addActionListener(ev -> {
+                title.setText("Welcome to " + nameField.getText());
+                JOptionPane.showMessageDialog(settingsDialog, "Settings Saved!");
+                settingsDialog.dispose();
+            });
+            settingsDialog.add(namePanel);
+            settingsDialog.add(themePanel);
+            settingsDialog.add(new JLabel("  System Version: 1.0.4"));
+            settingsDialog.add(saveBtn);
+            settingsDialog.setVisible(true);
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /// =========================///
         /// ====Logout action====
         /// /========================///
@@ -102,7 +175,10 @@ public class FullAdminDashboard extends JFrame {
         cardPanel.add(createDashboardHome() , "Dash");
         cardPanel.add(createCourseManagement() , "Course");
         cardPanel.add(createStudentManagement() , "Student");
+//        cardPanel.add(createStudentManagement() , "Instructor");
+//        cardPanel.add(createStudentManagement() , "Payment");
         cardPanel.add(createEnrollmentReport() , "Report");
+       // cardPanel.add(createInstructorPanel(),"Instructor");
         add(headerpanel , BorderLayout.NORTH);
         add(sidebar , BorderLayout.WEST);
         add(cardPanel , BorderLayout.CENTER);
@@ -118,9 +194,9 @@ public class FullAdminDashboard extends JFrame {
         panel.add(title, BorderLayout.CENTER);
         JPanel statsPanel = new JPanel(new GridLayout(1, 3, 20, 0));
         statsPanel.setOpaque(false);
-        statsPanel.add(createStatBox("Total Students", "1,240", new Color(46, 204, 113)));
-        statsPanel.add(createStatBox("Active Courses", "12", new Color(155, 89, 182)));
-        statsPanel.add(createStatBox("New Requests", "8", new Color(241, 196, 15)));
+        statsPanel.add(createStatBox("Total Students", "1,240", new Color(46, 204, 113 , 145)));
+        statsPanel.add(createStatBox("Active Courses", "12", new Color(59 , 16 , 77 , 178)));
+        statsPanel.add(createStatBox("New Requests", "8", new Color(84 , 27 , 138)));
         panel.add(statsPanel, BorderLayout.CENTER);
         return panel;
     }
@@ -204,6 +280,37 @@ public class FullAdminDashboard extends JFrame {
         panel.add(actionPanel, BorderLayout.SOUTH);
         return panel;
     }
+//    private JPanel createInstructorPanel() {
+//        JPanel panel = new JPanel(new GridLayout(5, 2, 10, 10));
+//        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+//        panel.add(new JLabel("Full Name:"));
+//        JTextField nameField = new JTextField();
+//        panel.add(nameField);
+//        panel.add(new JLabel("Specialization:"));
+//        JTextField specField = new JTextField();
+//        panel.add(specField);
+//        panel.add(new JLabel("Assign Course:"));
+//        String[] courses = {"Java Programming", "Database", "Python", "Networking"};
+//        JComboBox<String> courseBox = new JComboBox<>(courses);
+//        panel.add(courseBox);
+//        JButton btnAdd = new JButton("Register Instructor");
+//        panel.add(btnAdd);
+//        btnAdd.addActionListener(e -> JOptionPane.showMessageDialog(this, "Instructor Registered Successfully!"));
+//        return panel;
+//    }
+//    private JPanel createPaymentPanel() {
+//        JPanel panel = new JPanel(new BorderLayout());
+//        String[] columns = {"Student ID", "Amount", "Status", "Action"};
+//        Object[][] data = {
+//            {"UG/101", "5,000 ETB", "Pending", "Approve"},
+//            {"UG/105", "3,200 ETB", "Paid", "Done"}
+//        };
+//        JTable table = new JTable(data, columns);
+//        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+//        JButton btnApprove = new JButton("Confirm Selected Payment");
+//        panel.add(btnApprove, BorderLayout.SOUTH);
+//        return panel;
+//    }
 
     private JPanel createEnrollmentReport() {
         JPanel panel = new JPanel(new BorderLayout(15, 15));
