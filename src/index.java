@@ -1,3 +1,6 @@
+
+import javax.swing.RowFilter;
+import java.util.regex.Pattern;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -5,13 +8,17 @@ import java.awt.event.*;
 import javax.swing.BoxLayout;
 import java.awt.Component;
 import javax.swing.JDialog;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 public class index extends JFrame {
     JPanel centerSection;
     Color darkBlue = new Color(33 , 45 , 62);
     Color lightBlue = new Color(52 , 152 , 219);
     Color sidebarColor = new Color(44 , 62 , 80);
     Color backgroundColor = new Color(248, 250, 252);
-
     public index() {
         ImageIcon mm = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\regi.png");
         setIconImage(mm.getImage());
@@ -41,15 +48,14 @@ public class index extends JFrame {
         // =========================
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(backgroundColor);
-        // Header Section
+        // ------------------------------------------Header-------------------
         JPanel topSection = new JPanel(new BorderLayout());
         topSection.setBackground(new Color(44, 62, 80));
         topSection.setPreferredSize(new Dimension(0 , 80));
         JLabel welcomeLabel = new JLabel("Welcome to Online Course Registration System");
         welcomeLabel.setForeground(Color.WHITE);
         welcomeLabel.setFont(new Font("Segoe UI" , Font.BOLD , 26));
-        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        topSection.add(welcomeLabel , FlowLayout.LEFT);
+       topSection.add(welcomeLabel,BorderLayout.CENTER);
         // Center Section
         centerSection = new JPanel();
         centerSection.setBackground(backgroundColor);
@@ -71,14 +77,17 @@ public class index extends JFrame {
         };
         profile.setPreferredSize(new Dimension(50 , 50));
         topSection.add(profile , BorderLayout.WEST);
+        mainPanel.add(topSection,BorderLayout.NORTH);
         profile.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 new index().setVisible(true);
             }
         });
-        //right side logo with include dropdown
+        //logo
+        JPanel rightSidePanel = new JPanel();
+        rightSidePanel.setLayout(new BoxLayout(rightSidePanel, BoxLayout.Y_AXIS));
+        rightSidePanel.setOpaque(false);
         ImageIcon logo1 = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-20 113447.png");
-///  include circle
         JLabel profiles = new JLabel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -91,7 +100,16 @@ public class index extends JFrame {
             }
         };
         profiles.setPreferredSize(new Dimension(50, 50));
-        topSection.add(profiles, BorderLayout.EAST);
+        profiles.setMaximumSize(new Dimension(50, 50));
+        profiles.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel pro = new JLabel("Guest");
+        pro.setForeground(java.awt.Color.WHITE);
+        pro.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 12));
+        pro.setAlignmentX(Component.CENTER_ALIGNMENT);
+        rightSidePanel.add(profiles);
+        rightSidePanel.add(Box.createVerticalStrut(5));
+        rightSidePanel.add(pro);
+        topSection.add(rightSidePanel, BorderLayout.EAST);
         JPopupMenu dropdown = new JPopupMenu();
         JMenuItem contact = new JMenuItem("Contact Us");
         JMenuItem help = new JMenuItem("Help");
@@ -104,34 +122,31 @@ public class index extends JFrame {
                 dropdown.show(profiles , 0 , profiles.getHeight());
             }
         });
-        // =========================
-        // Sidebar
-        // =========================
+        // =========================================================
+        //                        Sidebar                        //
+        // ==================================================
         JPanel sideBar = new JPanel();
         sideBar.setBackground(sidebarColor);
-        sideBar.setPreferredSize(new Dimension(220 , getHeight()));
+        sideBar.setPreferredSize(new Dimension(220 , 0));
         sideBar.setLayout(new BoxLayout(sideBar , BoxLayout.Y_AXIS));
-        sideBar.setBorder(new EmptyBorder(20 , 20 , 20 , 20));
-        sideBar.setBorder(BorderFactory.createEmptyBorder(70 , 0 , 0 , 0));
-
+        sideBar.setBorder(BorderFactory.createEmptyBorder(80 , 15, 20 , 15));
         //course system
         JLabel sideTitle = new JLabel("Course System");
         sideTitle.setForeground(Color.WHITE);
         sideTitle.setFont(new Font("Arial" , Font.BOLD , 22));
         sideTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //side bar button
+        //sidebar button
         JButton login = new JButton("Login");
-        JButton registerButton = new JButton("Registration");
+        JButton register = new JButton("Registration");
         styleButton(login);
-        styleButton(registerButton);
+        styleButton(register);
         login.setAlignmentX(Component.CENTER_ALIGNMENT);
-        registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        register.setAlignmentX(Component.CENTER_ALIGNMENT);
         sideBar.add(sideTitle);
-        sideBar.add(Box.createRigidArea(new Dimension(0 , 40)));
+        sideBar.add(Box.createVerticalStrut(30));
         sideBar.add(login);
-        sideBar.add(Box.createRigidArea(new Dimension(0 , 20)));
-        sideBar.add(registerButton);
-        sideBar.add(Box.createRigidArea(new Dimension(0 , 15)));
+        sideBar.add(Box.createVerticalStrut(15));
+        sideBar.add(register);
         // Footer Section
         JPanel footer = new JPanel();
         footer.setBackground(darkBlue);
@@ -153,7 +168,7 @@ public class index extends JFrame {
             centerSection.revalidate();
             centerSection.repaint();
         });
-        registerButton.addActionListener(e -> {
+        register.addActionListener(e -> {
             centerSection.removeAll();
             centerSection.setLayout(new BorderLayout());
             centerSection.add(new RegistrationForm() , BorderLayout.CENTER);
@@ -180,6 +195,28 @@ public class index extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 showContactContent();
             }
+            private void showContactContent() {
+                centerSection.removeAll();
+                JLabel contacts = new JLabel("Contact Us");
+                contacts.setFont(new Font("Arial", Font.BOLD, 24));
+                contacts.setForeground(darkBlue);
+                JTextArea contactText = new JTextArea();
+                contactText.setText(
+                    "Email: deva@gmail.com.com\n\n"+
+                        "Email: belaya@gmail.com.com\n\n"+
+                        "Email: belaynew@gmail.com.com\n\n"+
+                        "Email: biruke@gmail.com.com\n\n"
+                        + "Phone: +251 900 000 000\n\n"
+                        + "Address: Woldia, Ethiopia\n\n"
+                        + "We are available Monday to Friday from 8:00 AM to 5:00 PM."
+                );
+                styleTextArea(contactText);
+                centerSection.add(contact);
+                centerSection.add(Box.createRigidArea(new Dimension(0, 20)));
+                centerSection.add(contactText);
+                centerSection.revalidate();
+                centerSection.repaint();
+            }
         });
         setVisible(true);
     }
@@ -197,40 +234,86 @@ public class index extends JFrame {
         JPanel imagePanel = new JPanel();
         imagePanel.setBackground(backgroundColor);
         imagePanel.setLayout(new FlowLayout(FlowLayout.CENTER , 20 , 10));
-        // --- 1. Hero & Search Section ---
-        JPanel heroPanel = new JPanel();
-        heroPanel.setLayout(new BoxLayout(heroPanel , BoxLayout.Y_AXIS));
-        heroPanel.setOpaque(false);
 
-        // Search Bar Panel
-            JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            searchPanel.setOpaque(false);
-            JTextField searchField = new JTextField("Search for courses...", 25);
-            searchField.setPreferredSize(new Dimension(300, 40));
-            searchField.setFont(new Font("Arial", Font.PLAIN, 14));
-            JButton btnSearch = new JButton("🔍");
-            btnSearch.setBackground(lightBlue);
-            btnSearch.setForeground(Color.WHITE);
-            btnSearch.setPreferredSize(new Dimension(100, 40));
-            btnSearch.setFocusPainted(false);
-            searchPanel.add(searchField);
-            searchPanel.add(btnSearch);
-            heroPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-            heroPanel.add(title);
-            heroPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-            heroPanel.add(searchPanel);
-            // -2.Course Cards
-            JPanel cardContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 25, 20));
-            cardContainer.setOpaque(false);
-            // card
+        JPanel heroPanel = new JPanel();
+        heroPanel.setLayout(new BoxLayout(heroPanel, BoxLayout.Y_AXIS));
+        heroPanel.setOpaque(false);
+        heroPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 160));
+        heroPanel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 160));
+        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        searchPanel.setOpaque(false);
+        JTextField searchField = new JTextField("Search for courses...", 25);
+        searchField.setPreferredSize(new Dimension(280, 38));
+        searchField.setFont(new Font("Arial", Font.PLAIN, 14));
+        JButton btnSearch = new JButton("🔍");
+        btnSearch.setBackground(lightBlue);
+        btnSearch.setForeground(Color.WHITE);
+        btnSearch.setPreferredSize(new Dimension(100, 40));
+        btnSearch.setFocusPainted(false);
+        searchPanel.add(searchField);
+        searchPanel.add(btnSearch);
+        heroPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        heroPanel.add(title);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        heroPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        heroPanel.add(searchPanel);
+        JPanel cardContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
+        cardContainer.setOpaque(false);
+        cardContainer.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        centerSection.add(heroPanel, BorderLayout.NORTH);
+        centerSection.add(cardContainer, BorderLayout.CENTER);
+
+        searchField.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                if (searchField.getText().equals("Search courses, teachers, notes...")) {
+                    searchField.setText("");
+                    searchField.setForeground(java.awt.Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                // customer cannot enter this backto text
+                if (searchField.getText().isEmpty()) {
+                    searchField.setForeground(java.awt.Color.GRAY);
+                    searchField.setText("Search courses, teachers, notes...");
+                }
+            }
+        });
+//        searchField.getDocument().addDocumentListener(new DocumentListener() {
+//            @Override
+//            public void insertUpdate(DocumentEvent e) {
+//                search();
+//            }
+//            @Override
+//            public void removeUpdate(DocumentEvent e) {
+//                search();
+//            }
+//            @Override
+//            public void changedUpdate(DocumentEvent e) {
+//
+//            }
+//            public void search() {
+//                String text = searchField.getText();
+//                if (text.trim().length() == 0) {
+//                    sort.setRowFilter(null);
+//                } else {
+//                      sort.setRowFilter(RowFilter.regexFilter("(?i)"+java.util.regex.Pattern.quote(text)));
+//                }
+//            }
+//        });
+           /// //////////////////////////////cardCntainers sample////////////////////////////////
             cardContainer.add(createModernCard("Java Programming", "C:\\Users\\HP\\Pictures\\Screenshots\\photo.png", "Master Java from basics to advanced."));
             cardContainer.add(createModernCard("Web Development", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 131303.png", "Build responsive websites using React."));
             cardContainer.add(createModernCard("UI/UX Design", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 131406.png", "Learn modern design principles."));
           cardContainer.add(createModernCard("C++ Programming", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 225230.png", "Master C++ from basics to advanced."));
           cardContainer.add(createModernCard("Database System", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 225945.png", "Master database from basics to advanced."));
          cardContainer.add(createModernCard("NestJs Programming", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 225345.png", "Master nestjs from basic to advanced"));
-        cardContainer.add(createModernCard("NestJs Programming", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 225345.png", "Master nestjs from basic to advanced"));
-        cardContainer.add(createModernCard("NestJs Programming", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 225345.png", "Master nestjs from basic to advanced"));
+        cardContainer.add(createModernCard("software design", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 213750.png", "design from basic to advanced"));
+        cardContainer.add(createModernCard("computer architecture", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 213750.png", "Master computer architecturesfrom basic to advanced"));
+        cardContainer.add(createModernCard("Node Backend", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 213750.png", "Master nodebackend from basic to advanced"));
+        cardContainer.add(createModernCard("ReactJs", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 214315.png", "Master ReactJs from basic to advanced"));
+        cardContainer.add(createModernCard("C#", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 214315.png", "MasterC# from basic to advanced"));
 
         centerSection.add(heroPanel, BorderLayout.NORTH);
             centerSection.add(cardContainer, BorderLayout.CENTER);
@@ -255,31 +338,6 @@ public class index extends JFrame {
         centerSection.add(aboutTitle);
         centerSection.add(Box.createRigidArea(new Dimension(0, 20)));
         centerSection.add(aboutText);
-        centerSection.revalidate();
-        centerSection.repaint();
-    }
-    // =========================
-    // Contact Us Content
-    // =========================
-    public void showContactContent() {
-        centerSection.removeAll();
-        JLabel contact = new JLabel("Contact Us");
-        contact.setFont(new Font("Arial", Font.BOLD, 24));
-        contact.setForeground(darkBlue);
-        JTextArea contactText = new JTextArea();
-        contactText.setText(
-                "Email: deva@gmail.com.com\n\n"+
-                "Email: belaya@gmail.com.com\n\n"+
-                    "Email: belaynew@gmail.com.com\n\n"+
-                      "Email: biruke@gmail.com.com\n\n"
-                        + "Phone: +251 900 000 000\n\n"
-                        + "Address: Woldia, Ethiopia\n\n"
-                        + "We are available Monday to Friday from 8:00 AM to 5:00 PM."
-        );
-        styleTextArea(contactText);
-        centerSection.add(contact);
-        centerSection.add(Box.createRigidArea(new Dimension(0, 20)));
-        centerSection.add(contactText);
         centerSection.revalidate();
         centerSection.repaint();
     }
@@ -325,7 +383,6 @@ public class index extends JFrame {
         // Image Label
         JLabel imgLabel = new JLabel();
         ImageIcon icon = new ImageIcon(imagePath);
-        // ምስሉ በካርዱ ልክ እንዲሰፋ (Resize)
         Image img = icon.getImage().getScaledInstance(200, 120, Image.SCALE_SMOOTH);
         imgLabel.setIcon(new ImageIcon(img));
         imgLabel.setHorizontalAlignment(SwingConstants.CENTER);

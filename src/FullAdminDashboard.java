@@ -37,7 +37,6 @@ public class FullAdminDashboard extends JFrame {
         title.setFont(new Font("Segoe UI" , Font.BOLD , 22));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         headerpanel.add(title , BorderLayout.CENTER);
-
         JPanel sidebar = new JPanel();
         sidebar.setLayout(new BoxLayout(sidebar , BoxLayout.Y_AXIS));
         sidebar.setBackground(sidebarColor);
@@ -132,28 +131,6 @@ public class FullAdminDashboard extends JFrame {
             settingsDialog.add(saveBtn);
             settingsDialog.setVisible(true);
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         /// =========================///
         /// ====Logout action====
         /// /========================///
@@ -351,7 +328,6 @@ public class FullAdminDashboard extends JFrame {
         btn.setBorderPainted(false);
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
         btn.addActionListener(e -> cardLayout.show(cardPanel, cardName));
         return btn;
     }

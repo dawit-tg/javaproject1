@@ -38,15 +38,22 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
 class StudentDashboard extends JFrame {
     private String studentId;
     JPanel sidebar, headerpanel, mainContent;
     CardLayout cardLayout;
+    private DefaultTableModel model;
 
-    public StudentDashboard(String user) {
+    public StudentDashboard(String name) {
         ImageIcon mm = new ImageIcon("D:\\istockphoto-1757344400-1024x1024.jpg");
         setIconImage(mm.getImage());
-        this.studentId = user;
+        this.studentId = name;
         setTitle("Student Dashboard");
         setSize(1100, 750);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -76,16 +83,6 @@ class StudentDashboard extends JFrame {
                 new index().setVisible(true);
             }
         });
-
-//
-//        JButton backButton = new JButton("⬅");
-//        headerpanel.add(backButton, BorderLayout.WEST);
-//        backButton.addActionListener(e -> {
-//            this.dispose();
-//            // index home = new index();
-//            // home.setVisible(true);
-//        });
-
         //center
         JPanel titleSearchPanel = new JPanel(new GridLayout(2, 1));
         titleSearchPanel.setOpaque(false);
@@ -100,11 +97,26 @@ class StudentDashboard extends JFrame {
         JPanel searchContainer = new JPanel();
         searchContainer.setOpaque(false);
         searchContainer.add(searchBar);
-
         titleSearchPanel.add(title);
         titleSearchPanel.add(searchContainer);
         headerpanel.add(titleSearchPanel, BorderLayout.CENTER);
-
+        searchBar.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                if (searchBar.getText().equals("Search courses, teachers, notes...")) {
+                    searchBar.setText("");
+                    searchBar.setForeground(java.awt.Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                // customer cannot enter this backto text
+                if (searchBar.getText().isEmpty()) {
+                    searchBar.setForeground(java.awt.Color.GRAY);
+                    searchBar.setText("Search courses, teachers, notes...");
+                }
+            }
+        });
         // pfofile id and gpa
         JPanel rightInfoPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         rightInfoPanel.setOpaque(false);
@@ -196,7 +208,7 @@ class StudentDashboard extends JFrame {
         content.add(newPass);
         content.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // 4. Preferences
+      /// //////////////////
         content.add(createSubTitle("Preferences"));
         JCheckBox emailNotify = new JCheckBox("Receive Email Notifications");
         emailNotify.setBackground(Color.WHITE);
@@ -257,8 +269,20 @@ class StudentDashboard extends JFrame {
         return btn;
     }
     private JPanel createDashboardPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 20));
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 70));
         panel.setBackground(Color.WHITE);
+        panel.add(createStatCard("Total Courses", "12", new Color(52, 152, 219)));
+        panel.add(createStatCard("My Courses", "3", new Color(46, 204, 113)));
+        panel.add(createStatCard("New Messages", "5", new Color(231, 76, 60)));
+        panel.add(createStatCard("Pending Registrations", "10", new Color(231, 76, 60)));
+        panel.add(createStatCard("List", "5", new Color(220, 76, 30)));
+        panel.add(createStatCard("Complete certificate", "5", new Color(231, 166, 80)));
+        panel.add(createStatCard("Total Courses", "12", new Color(52, 152, 219)));
+        panel.add(createStatCard("My Courses", "3", new Color(46, 204, 113)));
+        panel.add(createStatCard("New Messages", "5", new Color(231, 76, 60)));
+        panel.add(createStatCard("Pending Registrations", "10", new Color(231, 76, 60)));
+        panel.add(createStatCard("List", "5", new Color(220, 76, 30)));
+        panel.add(createStatCard("Complete certificate", "5", new Color(231, 166, 80)));
         panel.add(createStatCard("Total Courses", "12", new Color(52, 152, 219)));
         panel.add(createStatCard("My Courses", "3", new Color(46, 204, 113)));
         panel.add(createStatCard("New Messages", "5", new Color(231, 76, 60)));
@@ -284,34 +308,68 @@ class StudentDashboard extends JFrame {
 
     private JPanel createCourseCatalogPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(20 , 20 , 20 , 20));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
         JLabel lbl = new JLabel("(Available Courses)");
-        lbl.setFont(new Font("Arial" , Font.BOLD , 20));
-        panel.add(lbl , BorderLayout.CENTER);
-        //create table
-        String[] columns = {"Course ID" , "Course Name" , "Duration" , "Price"};
+        lbl.setFont(new Font("Arial", Font.BOLD, 20));
+        panel.add(lbl, BorderLayout.NORTH);
+
+        String[] columns = {"Course ID", "Course Name", "Duration", "Price"};
         Object[][] data = {
-            {"CS101" , "Java Programming" , "3 Months" , "2000 ETB"} ,
-            {"DB202" , "Database Systems" , "2 Months" , "1500 ETB"} ,
-            {"WEB303" , "React JS" , "2.5 Months" , "2500 ETB"} ,
-            {"PH1023","Phytone proramming","3 Months","3000 ETB"},
-            {"NJ1000","NestJs proramming","4 Months","4000 ETB"}
+            {"CS101", "Java Programming", "3 Months", "2000 ETB"},
+            {"DB202", "Database Systems", "2 Months", "1500 ETB"},
+            {"WEB303", "React JS", "2.5 Months", "2500 ETB"},
+            {"PH1023", "Phytone proramming", "3 Months", "3000 ETB"},
+            {"NJ1000", "NestJs proramming", "4 Months", "4000 ETB"}
         };
-        JTable table = new JTable(data , columns);
-        panel.add(new JScrollPane(table) , BorderLayout.CENTER);
-        JButton regBtn = new JButton("now register (Register)");
-        regBtn.setBackground(new Color(46 , 204 , 113));
-        regBtn.setForeground(Color.WHITE);
-        panel.add(regBtn , BorderLayout.SOUTH);
+
+        JTable table = new JTable(data, columns);
         table.setRowHeight(40);
         table.setShowVerticalLines(true);
-        table.setGridColor(new Color(50 , 50 , 50));
-        //table.setEditingColumn(false);
+        table.setGridColor(new Color(50, 50, 50));
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+        JButton regBtn = new JButton("now register (Register)");
+        regBtn.setBackground(new Color(46, 204, 113));
+        regBtn.setForeground(Color.WHITE);
+        panel.add(regBtn, BorderLayout.SOUTH);
+        regBtn.addActionListener(event -> {
+            int row = table.getSelectedRow();
+            if (row != -1) {
+                String id = table.getValueAt(row, 0).toString();
+                String name = table.getValueAt(row, 1).toString();
+                String duration = table.getValueAt(row, 2).toString();
+                String price = table.getValueAt(row, 3).toString();
+                insertToDatabase(id, name, duration, price);
+            } else {
+                JOptionPane.showMessageDialog(null, "First select course");
+            }
+        });
         return panel;
     }
-    private JPanel createMyCoursesPanel() { return new JPanel(); }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new StudentDashboard("Biruk").setVisible(true));
+    void insertToDatabase(String id, String name, String duration, String price) {
+        String url = "jdbc:postgresql://localhost:5432/onlinecourse";
+        String dbUser = "postgres";
+        String dbPass = "1453";
+        String query = "INSERT INTO registered_courses(course_id, course_name, duration, price) VALUES(?, ?, ?, ?)";
+        try (Connection connect = DriverManager.getConnection(url, dbUser, dbPass)) {
+            PreparedStatement pro = connect.prepareStatement(query);
+            pro.setString(1, id);
+            pro.setString(2, name);
+            pro.setString(3, duration);
+            pro.setString(4, price);
+            int result = pro.executeUpdate();
+            if (result > 0) {
+                JOptionPane.showMessageDialog(null, "Registered successfully");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "ERROR: " + e.getMessage());
+        }
     }
-}
+    private JPanel createMyCoursesPanel() {
+        return new JPanel();
+    }
+        public static void main (String[] args){
+            SwingUtilities.invokeLater(() -> new StudentDashboard("Biruk").setVisible(true));
+        }
+    }
