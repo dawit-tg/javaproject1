@@ -2,348 +2,451 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import javax.swing.border.EmptyBorder;
+import java.sql.*;
+//import StudentPanel;
+
 public class FullAdminDashboard extends JFrame {
+
     private JPanel cardPanel;
     private CardLayout cardLayout;
-    private JPanel headerpanel;
-    private Color sidebarColor = new Color(44 , 62 , 80);
+
+    private Color sidebarColor = new Color(28, 36, 43);
+
+    private DefaultTableModel courseModel;
+    private DefaultTableModel dashCourseModel;
+    private DefaultTableModel dashStudentModel;
+
     public FullAdminDashboard() {
-        setTitle("University Admin");
-        setSize(1100 , 700);
+
+        setTitle("University Admin Dashboard");
+        setSize(1100, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
-        headerpanel = new JPanel(new BorderLayout());
-        headerpanel.setBackground(new Color(44 , 62 , 80));
-        headerpanel.setPreferredSize(new Dimension(0 , 70));
-        //admine profile or logo left side logo
-        ImageIcon originalIcon = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-20 113447.png");
-        JLabel profileLabel = new JLabel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                int size = Math.min(getWidth(), getHeight());
-                g2.setClip(new java.awt.geom.Ellipse2D.Double(0, 0, size, size));
-                g2.drawImage(originalIcon.getImage(), 0, 0, size, size, this);
-                g2.dispose();
-            }
-        };
-        profileLabel.setPreferredSize(new Dimension(50, 50));
-        headerpanel.add(profileLabel, BorderLayout.WEST);
-        //header name
-        JLabel title = new JLabel("Welcome To Admin Dashboard");
-        title.setForeground(Color.WHITE);
-        title.setFont(new Font("Segoe UI" , Font.BOLD , 22));
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        headerpanel.add(title , BorderLayout.CENTER);
+
+        initUI();
+        setVisible(true);
+    }
+
+    // ======================================================
+    private void initUI() {
+
         JPanel sidebar = new JPanel();
-        sidebar.setLayout(new BoxLayout(sidebar , BoxLayout.Y_AXIS));
+        sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
         sidebar.setBackground(sidebarColor);
-        sidebar.setPreferredSize(new Dimension(230 , 0));
-        sidebar.setBorder(new EmptyBorder(20 , 10 , 20 , 10));
+        sidebar.setPreferredSize(new Dimension(220, 700));
 
-        JLabel lo = new JLabel("  ADMIN ");
-        lo.setForeground(Color.WHITE);
-        lo.setFont(new Font("Arial" , Font.BOLD , 18));
-        lo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lo.setBorder(new EmptyBorder(10 , 0 , 30 , 0));
-        sidebar.add(lo);
+        JLabel logo = new JLabel(" ADMIN PANEL");
+        logo.setForeground(Color.WHITE);
+        logo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        logo.setBorder(new EmptyBorder(25, 10, 25, 10));
+        sidebar.add(logo);
 
-        sidebar.add(createMenuButton("Dashboard" , "Dash"));
-        sidebar.add(Box.createRigidArea(new Dimension(0 , 10)));
-        sidebar.add(createMenuButton("Manage Courses" , "Course"));
-        sidebar.add(Box.createRigidArea(new Dimension(0 , 10)));
-        sidebar.add(createMenuButton("Manage Students" , "Student"));
-//        sidebar.add(Box.createRigidArea(new Dimension(0 , 10)));
-//        sidebar.add(createMenuButton("Manage Instructor","Instructor"));
-//        sidebar.add(Box.createRigidArea(new Dimension(0 , 10)));
-//        sidebar.add(createMenuButton("Payment/Finance","Payment"));
-//        sidebar.add(Box.createRigidArea(new Dimension(0 , 10)));
-        sidebar.add(createMenuButton("Enrollment Reports" , "Report"));
+        sidebar.add(createMenuButton("Dashboard", "Dash"));
+        sidebar.add(createMenuButton("Courses", "Course"));
+        sidebar.add(createMenuButton("Students", "Student"));
+
+        JButton logoutBtn = new JButton("Logout");
+        styleSidebarButton(logoutBtn);
+        logoutBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        logoutBtn.addActionListener(e -> {
+            dispose();
+            new index(); // your home page
+        });
+
         sidebar.add(Box.createVerticalGlue());
-        //right side logo
-        ImageIcon logo1 = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\birukk.png");
-        JLabel profiles = new JLabel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                int size = Math.min(getWidth(), getHeight());
-                g2.setClip(new java.awt.geom.Ellipse2D.Double(0, 0, size, size));
-                g2.drawImage(originalIcon.getImage(), 0, 0, size, size, this);
-                g2.dispose();
-            }
-        };
-        profiles.setPreferredSize(new Dimension(50, 50));
-        headerpanel.add(profiles, BorderLayout.EAST);
-        JPopupMenu men=new JPopupMenu();
-        JMenuItem  profile=new JMenuItem("Profiles");
-        JMenuItem  setting=new JMenuItem("Setting");
-        JMenuItem  Year=new JMenuItem("ACadamic Year");
-        men.add(profile);
-        men.add(setting);
-        men.add(Year);
-        profiles.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                men.show(profiles , 0 , profiles.getHeight());
-            }
-        });
-        //  Academic Year
-        Year.addActionListener(e -> {
-            String newYear = JOptionPane.showInputDialog(this,
-                "Enter New Academic Year (e.g. 2018 E.C):",
-                "Academic Year Update",
-                JOptionPane.QUESTION_MESSAGE);
-            if (newYear != null && !newYear.trim().isEmpty()) {
-                title.setText("Welcome To Admin Dashboard - " + newYear);
-                JOptionPane.showMessageDialog(this, "Academic Year updated to: " + newYear);
-            }
-        });
-        //setting item work
-        setting.addActionListener(e -> {
-            // Create a custom dialog for settings
-            JDialog settingsDialog = new JDialog(this, "System Settings", true);
-            settingsDialog.setSize(350, 250);
-            settingsDialog.setLayout(new GridLayout(4, 1, 10, 10));
-            settingsDialog.setLocationRelativeTo(this);
-            //  Name Field
-            JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            namePanel.add(new JLabel("Institution Name: "));
-            JTextField nameField = new JTextField("Admin", 15);
-            namePanel.add(nameField);
-            // Theme Selector (Optional Example)
-            JPanel themePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-            themePanel.add(new JLabel("System Theme: "));
-            themePanel.add(new JComboBox<>(new String[]{"Dark Blue", "Light Gray", "Classic"}));
-            // Save Button
-            JButton saveBtn = new JButton("Save Changes");
-            saveBtn.setBackground(sidebarColor);
-            saveBtn.setForeground(Color.WHITE);
-            saveBtn.addActionListener(ev -> {
-                title.setText("Welcome to " + nameField.getText());
-                JOptionPane.showMessageDialog(settingsDialog, "Settings Saved!");
-                settingsDialog.dispose();
-            });
-            settingsDialog.add(namePanel);
-            settingsDialog.add(themePanel);
-            settingsDialog.add(new JLabel("  System Version: 1.0.4"));
-            settingsDialog.add(saveBtn);
-            settingsDialog.setVisible(true);
-        });
-        /// =========================///
-        /// ====Logout action====
-        /// /========================///
-        JButton logout = createMenuButton("Logout" , "Logout");
-        logout.addActionListener(e ->{
-            int confirm = JOptionPane.showConfirmDialog(null ,
-                "Are you sure you want to logout?" , "Logout Confirmation" ,
-                JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                this.dispose();
-                new LoginPage().setVisible(true);
-            }
-        });
-        sidebar.add(logout);
+        sidebar.add(logoutBtn);
+
+        sidebar.add(Box.createVerticalGlue());
 
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
-        cardPanel.setBackground(Color.WHITE);
-        cardPanel.add(createDashboardHome() , "Dash");
-        cardPanel.add(createCourseManagement() , "Course");
-        cardPanel.add(createStudentManagement() , "Student");
-//        cardPanel.add(createStudentManagement() , "Instructor");
-//        cardPanel.add(createStudentManagement() , "Payment");
-        cardPanel.add(createEnrollmentReport() , "Report");
-       // cardPanel.add(createInstructorPanel(),"Instructor");
-        add(headerpanel , BorderLayout.NORTH);
-        add(sidebar , BorderLayout.WEST);
-        add(cardPanel , BorderLayout.CENTER);
+
+        cardPanel.add(createDashboard(), "Dash");
+        cardPanel.add(createCoursePanel(), "Course");
+        cardPanel.add(new StudentPanel(), "Student");
+
+
+        add(sidebar, BorderLayout.WEST);
+        add(cardPanel, BorderLayout.CENTER);
     }
-    private JPanel createDashboardHome() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(new EmptyBorder(25, 25, 25, 25));
+
+    private void styleSidebarButton(JButton b) {
+        b.setFocusPainted(false);
+        b.setBorderPainted(false);
+        b.setContentAreaFilled(false);
+        b.setOpaque(true);
+
+        b.setBackground(sidebarColor);
+        b.setForeground(Color.WHITE);
+        b.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+
+        b.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
+    }
+
+    private JPanel createDashboard() {
+
+        JPanel panel = new JPanel(new BorderLayout(15, 15));
         panel.setBackground(new Color(245, 246, 250));
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-        JLabel title = new JLabel("System Overview");
-        title.setFont(new Font("Arial", Font.BOLD, 24));
-        title.setBorder(new EmptyBorder(0, 0, 20, 0));
-        panel.add(title, BorderLayout.CENTER);
-        JPanel statsPanel = new JPanel(new GridLayout(1, 3, 20, 0));
-        statsPanel.setOpaque(false);
-        statsPanel.add(createStatBox("Total Students", "1,240", new Color(46, 204, 113 , 145)));
-        statsPanel.add(createStatBox("Active Courses", "12", new Color(59 , 16 , 77 , 178)));
-        statsPanel.add(createStatBox("New Requests", "8", new Color(84 , 27 , 138)));
-        panel.add(statsPanel, BorderLayout.CENTER);
+        // ================= COURSE TABLE =================
+        dashCourseModel = new DefaultTableModel(
+                new String[]{"ID", "Course", "Duration", "Price"}, 0);
+
+        JTable courseTable = new JTable(dashCourseModel);
+        JScrollPane courseScroll = new JScrollPane(courseTable);
+
+        // ================= STUDENT TABLE =================
+        dashStudentModel = new DefaultTableModel(
+                new String[]{"ID", "Name", "Email", "Department"}, 0);
+
+        JTable studentTable = new JTable(dashStudentModel);
+        JScrollPane studentScroll = new JScrollPane(studentTable);
+
+        // ================= TOP TITLE =================
+        JLabel title = new JLabel("Dashboard Overview");
+        title.setFont(new Font("Segoe UI", Font.BOLD, 20));
+
+        JPanel top = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        top.setBackground(panel.getBackground());
+        top.add(title);
+
+        // ================= CENTER SPLIT =================
+        JSplitPane split = new JSplitPane(
+                JSplitPane.VERTICAL_SPLIT,
+                courseScroll,
+                studentScroll
+        );
+
+        split.setResizeWeight(0.5);
+
+        panel.add(top, BorderLayout.NORTH);
+        panel.add(split, BorderLayout.CENTER);
+
+        // LOAD DATA
+        loadCoursesDash();
+        loadStudentsDash();
+
         return panel;
     }
 
-    private JPanel createCourseManagement() {
+
+    // ======================================================
+    private JPanel createCoursePanel() {
+
+
         JPanel panel = new JPanel(new BorderLayout(15, 15));
+        panel.setBackground(new Color(245, 246, 250));
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        String[] cols = {"ID", "Course Name", "Duration", "Price"};
-        DefaultTableModel model = new DefaultTableModel(cols, 0);
-        model.addRow(new Object[]{"C1", "Java Programming", "3 Months", "2500 ETB"});
-        model.addRow(new Object[]{"C2", "React JS", "2 Months", "3000 ETB"});
-        model.addRow(new Object[]{"C3", "C++ Programming", "5 Months", "2500 ETB"});
-        model.addRow(new Object[]{"C5", "Nest JS", "2 Months", "3000 ETB"});
-        model.addRow(new Object[]{"C6", "Phytone Programming", "3 Months", "4500 ETB"});
-        model.addRow(new Object[]{"C7", "Web Design", "2 Months", "5000 ETB"});
 
-        JTable table = new JTable(model);
-        table.setRowHeight(30);
-        panel.add(new JScrollPane(table), BorderLayout.CENTER);
-        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton addBtn = new JButton("Add New Course");
-        addBtn.setBackground(new Color(39, 174, 96));
-        addBtn.setForeground(Color.WHITE);
-        addBtn.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        addBtn.setFocusPainted(false);
-        addBtn.setBorderPainted(false);
-        addBtn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        courseModel = new DefaultTableModel(
+                new String[]{"ID", "Course", "Duration", "Price"}, 0);
 
-        JButton edit = new JButton("Edit Selected");
-        edit.setBackground(new Color(41, 128, 185));
-        edit.setForeground(Color.WHITE);
-        edit.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        edit.setFocusPainted(false);
-        edit.setBorderPainted(false);
-        edit.setCursor(new Cursor(Cursor.HAND_CURSOR));
-      JButton delete = new JButton("Delete Course");
-        delete.setBackground(new Color(231, 76, 60));
-        delete.setForeground(Color.WHITE);
-        delete.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        delete.setFocusPainted(false);
-        delete.setBorderPainted(false);
-        delete.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JTable table = new JTable(courseModel);
+        JScrollPane scroll = new JScrollPane(table);
+
+        // FORM
+        JPanel form = new JPanel();
+        form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
+        form.setBackground(Color.WHITE);
+        form.setBorder(BorderFactory.createTitledBorder("Course Form"));
+
+        JTextField id = smallField();
+        JTextField name = smallField();
+        JTextField duration = smallField();
+        JTextField price = smallField();
+
+        form.add(label("ID")); form.add(id);
+        form.add(label("Name")); form.add(name);
+        form.add(label("Duration")); form.add(duration);
+        form.add(label("Price")); form.add(price);
+
+        JButton add = new JButton("Add");
+        JButton edit = new JButton("Edit");
+        JButton del = new JButton("Delete");
+
+        JPanel btnPanel = new JPanel(new FlowLayout());
+        btnPanel.setBackground(Color.WHITE);
+        btnPanel.add(add);
         btnPanel.add(edit);
-        btnPanel.add(addBtn);
-        btnPanel.add(delete);
-        panel.add(btnPanel, BorderLayout.SOUTH);
-        return panel;
-    }
-    private JPanel createStudentManagement() {
-        JPanel panel = new JPanel(new BorderLayout(15, 15));
-        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        btnPanel.add(del);
 
-        JLabel title = new JLabel("Student Management");
-        title.setFont(new Font("Arial", Font.BOLD, 20));
-        panel.add(title, BorderLayout.CENTER);
-        String[] cols = {"Student ID", "Full Name", "Email", "Status"};
-        DefaultTableModel model = new DefaultTableModel(cols, 0);
-        model.addRow(new Object[]{"S001", "Biruk T.", "biruk@email.com", "Active"});
-        model.addRow(new Object[]{"S002", "Kidist A.", "kidu@email.com", "Active"});
-        model.addRow(new Object[]{"S003", "Abebe C.", "abebe@email.com", "Blocked"});
+        form.add(btnPanel);
+        form.setPreferredSize(new Dimension(220, 300));
 
-        JTable table = new JTable(model);
-        table.setRowHeight(30);
-        panel.add(new JScrollPane(table), BorderLayout.CENTER);
-        JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        JButton blockBtn = new JButton("Toggle Block Status");
-        blockBtn.setBackground(new Color(231, 76, 60));
-        blockBtn.setForeground(Color.WHITE);
+        panel.add(form, BorderLayout.NORTH);
+        panel.add(scroll, BorderLayout.CENTER);
 
-        blockBtn.addActionListener(e -> {
-            int row = table.getSelectedRow();
-            if(row != -1) {
-                String currentStatus = model.getValueAt(row, 3).toString();
-                String newStatus = currentStatus.equals("Active") ? "Blocked" : "Active";
-                model.setValueAt(newStatus, row, 3);
-            } else {
-                JOptionPane.showMessageDialog(this, "Please select a student first!");
+        loadCourses();
+
+        table.getSelectionModel().addListSelectionListener(e -> {
+            int r = table.getSelectedRow();
+            if (r != -1) {
+                id.setText(courseModel.getValueAt(r, 0).toString());
+                name.setText(courseModel.getValueAt(r, 1).toString());
+                duration.setText(courseModel.getValueAt(r, 2).toString());
+                price.setText(courseModel.getValueAt(r, 3).toString());
             }
         });
-        actionPanel.add(blockBtn);
-        panel.add(actionPanel, BorderLayout.SOUTH);
-        return panel;
-    }
-//    private JPanel createInstructorPanel() {
-//        JPanel panel = new JPanel(new GridLayout(5, 2, 10, 10));
-//        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-//        panel.add(new JLabel("Full Name:"));
-//        JTextField nameField = new JTextField();
-//        panel.add(nameField);
-//        panel.add(new JLabel("Specialization:"));
-//        JTextField specField = new JTextField();
-//        panel.add(specField);
-//        panel.add(new JLabel("Assign Course:"));
-//        String[] courses = {"Java Programming", "Database", "Python", "Networking"};
-//        JComboBox<String> courseBox = new JComboBox<>(courses);
-//        panel.add(courseBox);
-//        JButton btnAdd = new JButton("Register Instructor");
-//        panel.add(btnAdd);
-//        btnAdd.addActionListener(e -> JOptionPane.showMessageDialog(this, "Instructor Registered Successfully!"));
-//        return panel;
-//    }
-//    private JPanel createPaymentPanel() {
-//        JPanel panel = new JPanel(new BorderLayout());
-//        String[] columns = {"Student ID", "Amount", "Status", "Action"};
-//        Object[][] data = {
-//            {"UG/101", "5,000 ETB", "Pending", "Approve"},
-//            {"UG/105", "3,200 ETB", "Paid", "Done"}
-//        };
-//        JTable table = new JTable(data, columns);
-//        panel.add(new JScrollPane(table), BorderLayout.CENTER);
-//        JButton btnApprove = new JButton("Confirm Selected Payment");
-//        panel.add(btnApprove, BorderLayout.SOUTH);
-//        return panel;
-//    }
 
-    private JPanel createEnrollmentReport() {
-        JPanel panel = new JPanel(new BorderLayout(15, 15));
-        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        // ADD
+        add.addActionListener(e -> {
+            try {
+                Connection con = DBConnection.getConnection();
 
-        JLabel title = new JLabel("Enrollment Reports");
-        title.setFont(new Font("Arial", Font.BOLD, 20));
-        panel.add(title, BorderLayout.CENTER);
+                PreparedStatement ps = con.prepareStatement(
+                        "INSERT INTO courses(id, name, duration, price) VALUES (?, ?, ?, ?)"
+                );
 
-        String[] cols = {"Registration Date", "Student Name", "Course Name", "Payment Status"};
-        DefaultTableModel model = new DefaultTableModel(cols, 0);
-        model.addRow(new Object[]{"2026-04-10", "Biruk T.", "Java Programming", "Paid"});
-        model.addRow(new Object[]{"2026-04-12", "Kidist A.", "React JS", "Pending"});
-        model.addRow(new Object[]{"2026-04-15", "Abebe C.", "Java Programming", "Paid"});
+                ps.setString(1, id.getText().trim());
+                ps.setString(2, name.getText().trim());
+                ps.setString(3, duration.getText().trim());
+                ps.setString(4, price.getText().trim());
 
-        JTable table = new JTable(model);
-        table.setRowHeight(30);
-        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+                ps.executeUpdate();
 
-        JButton downloadBtn = new JButton("Download PDF Report");
-        downloadBtn.setBackground(new Color(52, 152, 219));
-        downloadBtn.setForeground(Color.WHITE);
+                JOptionPane.showMessageDialog(null, "Course added successfully!");
 
-        downloadBtn.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Generating PDF Report... Please Wait.");
+                refreshAll();
+
+                ps.close();
+                con.close();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
         });
 
-        panel.add(downloadBtn, BorderLayout.SOUTH);
+        // EDIT
+        edit.addActionListener(e -> {
+            try {
+                if (id.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please select a course first!");
+                    return;
+                }
+
+                Connection con = DBConnection.getConnection();
+
+                PreparedStatement ps = con.prepareStatement(
+                        "UPDATE courses SET name=?, duration=?, price=? WHERE id=?"
+                );
+
+                ps.setString(1, name.getText().trim());
+                ps.setString(2, duration.getText().trim());
+                ps.setString(3, price.getText().trim());
+                ps.setString(4, id.getText().trim());
+
+                int result = ps.executeUpdate();
+
+                if (result > 0) {
+                    JOptionPane.showMessageDialog(null, "Course updated successfully!");
+
+                    id.setText("");
+                    name.setText("");
+                    duration.setText("");
+                    price.setText("");
+
+                    refreshAll();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Course not found!");
+                }
+
+                ps.close();
+                con.close();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+        });
+        // DELETE
+        del.addActionListener(e -> {
+            try {
+                if (id.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Please select a course first!");
+                    return;
+                }
+
+                Connection con = DBConnection.getConnection();
+
+                PreparedStatement ps = con.prepareStatement(
+                        "DELETE FROM courses WHERE id = ?"
+                );
+
+                ps.setString(1, id.getText().trim());
+
+                int result = ps.executeUpdate();
+
+                if (result > 0) {
+                    JOptionPane.showMessageDialog(null, "Do you wanna delete this course ?");
+                    id.setText("");
+                    name.setText("");
+                    duration.setText("");
+                    price.setText("");
+                    refreshAll();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Course not found!");
+                }
+
+                ps.close();
+                con.close();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+        });
+
         return panel;
     }
 
-    private JButton createMenuButton(String text, String cardName) {
-        JButton btn = new JButton(text);
-        btn.setMaximumSize(new Dimension(210, 45));
-        btn.setBackground(sidebarColor);
-        btn.setForeground(Color.WHITE);
-        btn.setFocusPainted(false);
-        btn.setBorderPainted(false);
-        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btn.addActionListener(e -> cardLayout.show(cardPanel, cardName));
-        return btn;
+    // ======================================================
+    public void loadCourses() {
+        try {
+            courseModel.setRowCount(0); // VERY IMPORTANT
+
+            Connection con = DBConnection.getConnection();
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM courses");
+
+            while (rs.next()) {
+                courseModel.addRow(new Object[]{
+                        rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("duration"),
+                        rs.getString("price")
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    private JPanel createStatBox(String title, String val, Color c) {
-        JPanel box = new JPanel(new GridLayout(2, 1));
-        box.setBackground(c);
-        box.setBorder(new EmptyBorder(20, 20, 20, 20));
-        JLabel t = new JLabel(title); t.setForeground(Color.WHITE);
-        JLabel v = new JLabel(val); v.setFont(new Font("Arial", Font.BOLD, 35)); v.setForeground(Color.WHITE);
-        box.add(t); box.add(v);
-        return box;
+
+    // ======================================================
+    private JTextField smallField() {
+        JTextField f = new JTextField();
+        f.setMaximumSize(new Dimension(180, 25));
+        f.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        return f;
     }
+
+    private JLabel label(String t) {
+        return new JLabel(t);
+    }
+
+    private void refreshAll() {
+        loadCourses();
+        loadCoursesDash();
+        loadStudentsDash();
+    }
+
+    private void loadCoursesDash() {
+        try {
+            Connection con = DBConnection.getConnection();
+            dashCourseModel.setRowCount(0);
+
+            ResultSet rs = con.createStatement()
+                    .executeQuery("SELECT * FROM courses");
+
+            while (rs.next()) {
+                dashCourseModel.addRow(new Object[]{
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getString(4)
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void loadStudentsDash() {
+        try {
+            Connection con = DBConnection.getConnection();
+            dashStudentModel.setRowCount(0);
+
+            ResultSet rs = con.createStatement()
+                    .executeQuery("SELECT * FROM students");
+
+            while (rs.next()) {
+                dashStudentModel.addRow(new Object[]{
+                        rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("department")
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private JButton createMenuButton(String text, String card) {
+
+        JButton b = new JButton(text);
+
+        // STYLE
+        b.setFocusPainted(false);
+        b.setBorderPainted(false);
+        b.setContentAreaFilled(false);
+        b.setOpaque(true);
+
+        b.setBackground(sidebarColor);
+        b.setForeground(Color.WHITE);
+
+        b.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        b.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        b.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
+        b.setBorder(new EmptyBorder(10, 20, 10, 10));
+
+        // HOVER EFFECT
+        Color normal = sidebarColor;
+        Color hover = new Color(45, 58, 68);
+        Color active = new Color(70, 90, 110);
+
+        b.addMouseListener(new java.awt.event.MouseAdapter() {
+
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                if (b.getBackground() != active)
+                    b.setBackground(hover);
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                if (b.getBackground() != active)
+                    b.setBackground(normal);
+            }
+        });
+
+        // CLICK ACTION (keeps your logic)
+        b.addActionListener(e -> {
+
+            // reset all buttons in sidebar
+            Container parent = b.getParent();
+            for (Component c : parent.getComponents()) {
+                if (c instanceof JButton) {
+                    c.setBackground(normal);
+                }
+            }
+
+            // set active color
+            b.setBackground(active);
+
+            cardLayout.show(cardPanel, card);
+        });
+
+        return b;
+    }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            FullAdminDashboard frame = new FullAdminDashboard();
-            frame.setVisible(true);
-        });
+        new FullAdminDashboard();
     }
 }
