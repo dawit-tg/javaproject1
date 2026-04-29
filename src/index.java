@@ -52,6 +52,7 @@ public class index extends JFrame {
         JPanel topSection = new JPanel(new BorderLayout());
         topSection.setBackground(new Color(44, 62, 80));
         topSection.setPreferredSize(new Dimension(0 , 80));
+        add(topSection,BorderLayout.NORTH);
         JLabel welcomeLabel = new JLabel("Welcome to Online Course Registration System");
         welcomeLabel.setForeground(Color.WHITE);
         welcomeLabel.setFont(new Font("Segoe UI" , Font.BOLD , 26));
@@ -122,20 +123,21 @@ public class index extends JFrame {
                 dropdown.show(profiles , 0 , profiles.getHeight());
             }
         });
-        // =========================================================
-        //                        Sidebar                        //
-        // ==================================================
-        JPanel sideBar = new JPanel();
+
+//        // =========================================================
+//        //                        Sidebar                        //
+//        // ==================================================
+         JPanel sideBar = new JPanel();
         sideBar.setBackground(sidebarColor);
         sideBar.setPreferredSize(new Dimension(220 , 0));
         sideBar.setLayout(new BoxLayout(sideBar , BoxLayout.Y_AXIS));
-        sideBar.setBorder(BorderFactory.createEmptyBorder(80 , 15, 20 , 15));
+        sideBar.setBorder(BorderFactory.createEmptyBorder(40 , 15, 20 , 15));
+        add(sideBar , BorderLayout.WEST);
         //course system
-        JLabel sideTitle = new JLabel("Course System");
+       JLabel sideTitle = new JLabel("Course System");
         sideTitle.setForeground(Color.WHITE);
         sideTitle.setFont(new Font("Arial" , Font.BOLD , 22));
         sideTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //sidebar button
         JButton login = new JButton("Login");
         JButton register = new JButton("Registration");
         styleButton(login);
@@ -147,7 +149,10 @@ public class index extends JFrame {
         sideBar.add(login);
         sideBar.add(Box.createVerticalStrut(15));
         sideBar.add(register);
-        // Footer Section
+
+        JScrollPane scrollPane = new JScrollPane(centerSection);
+        scrollPane.setBorder(null);
+//        // Footer Section
         JPanel footer = new JPanel();
         footer.setBackground(darkBlue);
         footer.setPreferredSize(new Dimension(700 , 50));
@@ -156,10 +161,10 @@ public class index extends JFrame {
         footerLabel.setFont(new Font("Arial" , Font.PLAIN , 30));
         footer.add(footerLabel);
         // Add to Main Panel
-        mainPanel.add(topSection , BorderLayout.NORTH);
+//        mainPanel.add(topSection , BorderLayout.NORTH);
+        mainPanel.add(scrollPane,BorderLayout.CENTER);
         mainPanel.add(centerSection , BorderLayout.CENTER);
         mainPanel.add(footer , BorderLayout.SOUTH);
-        add(sideBar , BorderLayout.WEST);
         add(mainPanel , BorderLayout.CENTER);
         login.addActionListener(e -> {
             centerSection.removeAll();
@@ -257,12 +262,12 @@ public class index extends JFrame {
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         heroPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         heroPanel.add(searchPanel);
+
         JPanel cardContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
         cardContainer.setOpaque(false);
         cardContainer.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         centerSection.add(heroPanel, BorderLayout.NORTH);
         centerSection.add(cardContainer, BorderLayout.CENTER);
-
         searchField.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -320,28 +325,6 @@ public class index extends JFrame {
             centerSection.revalidate();
             centerSection.repaint();
         }
-    // =========================
-    // About Us Content
-    // =========================
-    public void showAboutContent() {
-        centerSection.removeAll();
-        JLabel aboutTitle = new JLabel("About Us");
-        aboutTitle.setFont(new Font("Arial", Font.BOLD, 24));
-        aboutTitle.setForeground(darkBlue);
-        JTextArea aboutText = new JTextArea();
-        aboutText.setText(
-                "Our Online Course Registration System is designed to help students register for courses easily and quickly.\n\n"
-                        + "This system allows students to explore available courses, create accounts, login securely, and manage their registration process.\n\n"
-                        + "Our mission is to provide a modern, simple, and user-friendly platform for all students."
-        );
-        styleTextArea(aboutText);
-        centerSection.add(aboutTitle);
-        centerSection.add(Box.createRigidArea(new Dimension(0, 20)));
-        centerSection.add(aboutText);
-        centerSection.revalidate();
-        centerSection.repaint();
-    }
-    // =========================
     // Button Style
     // =========================
     public void styleButton(JButton button) {
@@ -380,7 +363,7 @@ public class index extends JFrame {
         card.setBackground(Color.WHITE);
         card.setLayout(new BorderLayout(10, 10));
         card.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 230), 1));
-        // Image Label
+        // Image
         JLabel imgLabel = new JLabel();
         ImageIcon icon = new ImageIcon(imagePath);
         Image img = icon.getImage().getScaledInstance(200, 120, Image.SCALE_SMOOTH);
