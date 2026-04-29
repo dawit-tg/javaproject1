@@ -2,9 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.border.TitledBorder;
 
@@ -19,15 +17,19 @@ public class RegistrationForm extends JPanel {
         setBackground(backgroundColor);
         setVisible(true);
         JPanel mainPanel = new JPanel();
-        mainPanel.setBackground(Color.WHITE);;
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(
+                BorderFactory.createEtchedBorder(), "Registration Form"
+        );
+        mainPanel.setBorder(titledBorder);
+        mainPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
         mainPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(220, 220, 220), 1),
-            BorderFactory.createEmptyBorder(30, 40, 30, 40)
+                BorderFactory.createLineBorder(Color.GRAY, 1),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
-        mainPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 8, 8, 8);
         gbc.fill = GridBagConstraints.HORIZONTAL;
+
         // Usernme
         JLabel userLabel = new JLabel("Username:");
         gbc.gridx = 0; gbc.gridy = 0;
@@ -36,6 +38,7 @@ public class RegistrationForm extends JPanel {
         usernameField = new JTextField(20);
         gbc.gridx = 1;
         add(usernameField, gbc);
+
         // Email
         JLabel emailLabel = new JLabel("Email:");
         gbc.gridx = 0; gbc.gridy = 1;
@@ -47,20 +50,24 @@ public class RegistrationForm extends JPanel {
         JLabel passLabel = new JLabel("Password:");
         gbc.gridx = 0; gbc.gridy = 2;
         add(passLabel, gbc);
+
         passwordField = new JPasswordField(20);
         gbc.gridx = 1;
         add(passwordField, gbc);
+
         // Confirm Password
         JLabel confirmPassLabel = new JLabel("Confirm Password:");
         gbc.gridx = 0; gbc.gridy = 3;
         add(confirmPassLabel, gbc);
+
         confirmPasswordField = new JPasswordField(20);
         gbc.gridx = 1;
         add(confirmPasswordField, gbc);
+
         // Gender
-        JLabel gender = new JLabel("Gender:");
+        JLabel genderLabel = new JLabel("Gender:");
         gbc.gridx = 0; gbc.gridy = 4;
-        add(gender, gbc);
+        add(genderLabel, gbc);
 
         genderBox = new JComboBox<>(new String[]{"Male", "Female"});
         gbc.gridx = 1;
@@ -73,13 +80,16 @@ public class RegistrationForm extends JPanel {
         phoneField = new JTextField(20);
         gbc.gridx = 1;
         add(phoneField, gbc);
+
         // Course
         JLabel courseLabel = new JLabel("Course:");
         gbc.gridx = 0; gbc.gridy = 6;
         add(courseLabel, gbc);
+
         courseBox = new JComboBox<>(new String[]{"Java", "Web Dev", "Database", "Networking"});
         gbc.gridx = 1;
         add(courseBox, gbc);
+
         // Submit Button
         JButton submitButton = new JButton("Register");
         submitButton.setBackground(lightBlue);
@@ -93,70 +103,55 @@ public class RegistrationForm extends JPanel {
         gbc.gridx=50;gbc.gridy=7;
         gbc.gridwidth= 1;
         add(reset,gbc);
-reset.addActionListener(event->{
-        usernameField.setText("");
-        emailField.setText("");
-        genderBox.setSelectedIndex(0);
-        confirmPasswordField.setText("");
-         passwordField.setText("");
-             courseBox.setSelectedIndex(0);
+        reset.addActionListener(event->{
+            usernameField.setText("");
+            emailField.setText("");
+            genderBox.setSelectedIndex(0);
+            confirmPasswordField.setText("");
+            passwordField.setText("");
+            courseBox.setSelectedIndex(0);
             phoneField.setText("");
-            });
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText().trim();
-                String email = emailField.getText().trim();
-                String password = new String(passwordField.getPassword()).trim();
-                String confirmPassword = new String(confirmPasswordField.getPassword()).trim();
-                String selectedGender = (String) genderBox.getSelectedItem();
-                String gender = selectedGender.substring(0, 1);
-                String phone = phoneField.getText().trim();
-                String course =(String)courseBox.getSelectedItem();
-                if(username.isEmpty() || email.isEmpty() || password.isEmpty() ||
-                        confirmPassword.isEmpty() || phone.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "All fields must be filled!");
-                    return;
-                }
-                if(!password.equals(confirmPassword)) {
-                    JOptionPane.showMessageDialog(null, "Passwords do not match!");
-                    return;
-                }
-                saveToDatabase(username,email,password,confirmPassword, String.valueOf(gender) ,phone,course);
-                JOptionPane.showMessageDialog(null, "Registration Successful!");
-            }
         });
-    }
-    public void saveToDatabase(String username, String email, String password, String confirmPassword, String gender, String phone , String course){
-        String url = "jdbc:postgresql://localhost:5432/onlinecourse";
-        String dbUser= "postgres";
-        String dbPass="1453";
-        String Sql = "INSERT INTO register(username,email,password,confirmpassword,gender,phone,course) VALUES (?,?,?,?,?,?,?)";
-        try(Connection connect= DriverManager.getConnection(url,dbUser,dbPass);
-            PreparedStatement pr= connect.prepareStatement(Sql)){
-                pr.setString(1,username);
-            pr.setString(2,email);
-            pr.setString(3,password);
-            pr.setString(4,confirmPassword);
-            pr.setString(5,gender);
-            pr.setString(6,phone);
-            pr.setString(7,course);
-            int result=pr.executeUpdate();
-                if(result>0) {
-                    JOptionPane.showMessageDialog(this , "registration is successfully");
-                    usernameField.setText("");
-                    emailField.setText("");
-                    passwordField.setText("");
-                    confirmPasswordField.setText("");
-                    genderBox.setSelectedIndex(0);
-                    phoneField.setText("");
-                    courseBox.setSelectedIndex(0);
-                }
-            } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null,"error"+e.getMessage());
-        }
+        submitButton.addActionListener(e -> {
+
+            String name = usernameField.getText();
+            String email = emailField.getText();
+            String phone = phoneField.getText();
+            String password = new String(passwordField.getPassword());
+            String confirm = new String(confirmPasswordField.getPassword());
+            String course = courseBox.getSelectedItem().toString();
+            String gender = genderBox.getSelectedItem().toString();
+
+            if (!password.equals(confirm)) {
+                JOptionPane.showMessageDialog(null, "Passwords do not match!");
+                return;
+            }
+
+            try {
+                Connection con = DBConnection.getConnection();
+
+                PreparedStatement ps = con.prepareStatement(
+                        "INSERT INTO students (name, email, password, department, status) VALUES (?, ?, ?, ?, 'ACTIVE')"
+                );
+
+                ps.setString(1, name);
+                ps.setString(2, email);
+                ps.setString(3, password);
+                ps.setString(4, course);
+
+                ps.executeUpdate();
+
+                JOptionPane.showMessageDialog(null, "Registration Successful!");
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "DB Error: " + ex.getMessage());
+            }
+
+        });
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() ->new RegistrationForm());
     }
 }
+

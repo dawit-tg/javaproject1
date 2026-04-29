@@ -375,37 +375,90 @@ public class index extends JFrame {
         textArea.setForeground(Color.DARK_GRAY);
     }
     private JPanel createModernCard(String title, String imagePath, String description) {
+
         JPanel card = new JPanel();
-        card.setPreferredSize(new Dimension(220, 300));
+        Dimension normalSize = new Dimension(220, 300);
+        Dimension hoverSize = new Dimension(240, 320);
+
+        card.setPreferredSize(normalSize);
         card.setBackground(Color.WHITE);
         card.setLayout(new BorderLayout(10, 10));
         card.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 230), 1));
-        // Image Label
+
+        // Image
         JLabel imgLabel = new JLabel();
         ImageIcon icon = new ImageIcon(imagePath);
         Image img = icon.getImage().getScaledInstance(200, 120, Image.SCALE_SMOOTH);
         imgLabel.setIcon(new ImageIcon(img));
         imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        // Text Content Panel
+
+        // Text panel
         JPanel textContent = new JPanel(new GridLayout(3, 2));
         textContent.setOpaque(false);
         textContent.setBorder(new EmptyBorder(10, 10, 10, 10));
+
         JLabel lblTitle = new JLabel(title);
         lblTitle.setFont(new Font("Arial", Font.BOLD, 16));
-        JLabel lblDesc = new JLabel("<html><body style='width: 150px'>" + description + "</body></html>");
+
+        JLabel lblDesc = new JLabel(
+                "<html><body style='width:150px'>" + description + "</body></html>"
+        );
         lblDesc.setFont(new Font("Arial", Font.PLAIN, 12));
         lblDesc.setForeground(Color.GRAY);
+
         JButton btnEnroll = new JButton("Enroll Now");
         btnEnroll.setBackground(new Color(46, 204, 113));
         btnEnroll.setForeground(Color.WHITE);
         btnEnroll.setFocusPainted(false);
+
         textContent.add(lblTitle);
         textContent.add(lblDesc);
         textContent.add(btnEnroll);
+
         card.add(imgLabel, BorderLayout.NORTH);
         card.add(textContent, BorderLayout.CENTER);
+
+        // HOVER ANIMATION
+        card.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                animateCard(card, normalSize, hoverSize);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                animateCard(card, hoverSize, normalSize);
+            }
+        });
+
         return card;
     }
+    private void animateCard(JPanel card, Dimension start, Dimension end) {
+        Timer timer = new Timer(15, null);
+
+        final int steps = 20; // about 0.3 sec
+        final int[] currentStep = {0};
+
+        int widthDiff = end.width - start.width;
+        int heightDiff = end.height - start.height;
+
+        timer.addActionListener(e -> {
+            currentStep[0]++;
+
+            int newWidth = start.width + (widthDiff * currentStep[0] / steps);
+            int newHeight = start.height + (heightDiff * currentStep[0] / steps);
+
+            card.setPreferredSize(new Dimension(newWidth, newHeight));
+            card.revalidate();
+
+            if (currentStep[0] >= steps) {
+                timer.stop();
+            }
+        });
+
+        timer.start();
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new index());
     }
