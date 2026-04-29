@@ -9,7 +9,6 @@ public class EnrollmentReportPage extends JPanel {
     private DefaultTableModel tableModel;
     private JTextField searchField;
     private JLabel totalEnrollmentsLabel;
-
     public EnrollmentReportPage() {
         // ዋናው ሌይአውት
         setLayout(new BorderLayout(15, 15));
