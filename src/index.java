@@ -434,9 +434,9 @@ public class index extends JFrame {
         return card;
     }
     private void animateCard(JPanel card, Dimension start, Dimension end) {
-        Timer timer = new Timer(15, null);
+        Timer timer = new Timer(10, null);
 
-        final int steps = 20; // about 0.3 sec
+        final int steps = 15; // about 0.3 sec
         final int[] currentStep = {0};
 
         int widthDiff = end.width - start.width;
