@@ -90,7 +90,6 @@ class StudentDashboard extends JFrame {
         title.setForeground(Color.WHITE);
         title.setFont(new Font("Segoe UI", Font.BOLD, 22));
         title.setHorizontalAlignment(SwingConstants.CENTER);
-
         // Search Bar
         JTextField searchBar = new JTextField("Search courses, teachers, notes...");
         searchBar.setPreferredSize(new Dimension(350, 25));
@@ -127,7 +126,7 @@ class StudentDashboard extends JFrame {
         idLabel.setForeground(Color.WHITE);
         idLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         JLabel gpaLabel = new JLabel("GPA: 3.85  ");
-        gpaLabel.setForeground(new Color(46, 204, 113)); // አረንጓዴ ከለር
+        gpaLabel.setForeground(new Color(46, 204, 113));
         gpaLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
         idGpaPanel.add(idLabel);
         idGpaPanel.add(gpaLabel);
@@ -236,7 +235,6 @@ class StudentDashboard extends JFrame {
         panel.add(new JScrollPane(content), BorderLayout.CENTER);
         return panel;
     }
-    //
     private JLabel createSubTitle(String text) {
         JLabel sub = new JLabel(text);
         sub.setFont(new Font("Segoe UI", Font.BOLD, 18));
@@ -269,8 +267,15 @@ class StudentDashboard extends JFrame {
         return btn;
     }
     private JPanel createDashboardPanel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 70));
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 70));
         panel.setBackground(Color.WHITE);
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBorder(null);
+        panel.setLayout(new GridLayout(0, 5, 10, 10));
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        add(scrollPane, BorderLayout.CENTER);
         panel.add(createStatCard("Total Courses", "12", new Color(52, 152, 219)));
         panel.add(createStatCard("My Courses", "3", new Color(46, 204, 113)));
         panel.add(createStatCard("New Messages", "5", new Color(231, 76, 60)));
@@ -290,6 +295,7 @@ class StudentDashboard extends JFrame {
         panel.add(createStatCard("List", "5", new Color(220, 76, 30)));
         panel.add(createStatCard("Complete certificate", "5", new Color(231, 166, 80)));
         return panel;
+
     }
 
     private JPanel createStatCard(String title, String value, Color color) {

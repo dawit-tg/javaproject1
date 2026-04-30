@@ -35,13 +35,11 @@ public class FullAdminDashboard extends JFrame {
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
         sidebar.setBackground(sidebarColor);
         sidebar.setPreferredSize(new Dimension(220, 700));
-
         JLabel logo = new JLabel(" ADMIN PANEL");
         logo.setForeground(Color.WHITE);
         logo.setFont(new Font("Segoe UI", Font.BOLD, 18));
         logo.setBorder(new EmptyBorder(25, 10, 25, 10));
         sidebar.add(logo);
-
         sidebar.add(createMenuButton("Dashboard", "Dash"));
         sidebar.add(createMenuButton("Courses", "Course"));
         sidebar.add(createMenuButton("Students", "Student"));
@@ -49,15 +47,13 @@ public class FullAdminDashboard extends JFrame {
         JButton logoutBtn = new JButton("Logout");
         styleSidebarButton(logoutBtn);
         logoutBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         logoutBtn.addActionListener(e -> {
             dispose();
-            new index(); // your home page
+            new index();
         });
 
         sidebar.add(Box.createVerticalGlue());
         sidebar.add(logoutBtn);
-
         sidebar.add(Box.createVerticalGlue());
 
         cardLayout = new CardLayout();
@@ -135,8 +131,6 @@ public class FullAdminDashboard extends JFrame {
 
     // ======================================================
     private JPanel createCoursePanel() {
-
-
         JPanel panel = new JPanel(new BorderLayout(15, 15));
         panel.setBackground(new Color(245, 246, 250));
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -206,14 +200,10 @@ public class FullAdminDashboard extends JFrame {
                 ps.setString(4, price.getText().trim());
 
                 ps.executeUpdate();
-
                 JOptionPane.showMessageDialog(null, "Course added successfully!");
-
                 refreshAll();
-
                 ps.close();
                 con.close();
-
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -227,13 +217,10 @@ public class FullAdminDashboard extends JFrame {
                     JOptionPane.showMessageDialog(null, "Please select a course first!");
                     return;
                 }
-
                 Connection con = DBConnection.getConnection();
-
                 PreparedStatement ps = con.prepareStatement(
                         "UPDATE courses SET name=?, duration=?, price=? WHERE id=?"
                 );
-
                 ps.setString(1, name.getText().trim());
                 ps.setString(2, duration.getText().trim());
                 ps.setString(3, price.getText().trim());
@@ -253,7 +240,6 @@ public class FullAdminDashboard extends JFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "Course not found!");
                 }
-
                 ps.close();
                 con.close();
 
@@ -277,9 +263,7 @@ public class FullAdminDashboard extends JFrame {
                 );
 
                 ps.setString(1, id.getText().trim());
-
                 int result = ps.executeUpdate();
-
                 if (result > 0) {
                     JOptionPane.showMessageDialog(null, "Do you wanna delete this course ?");
                     id.setText("");
@@ -290,16 +274,13 @@ public class FullAdminDashboard extends JFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "Course not found!");
                 }
-
                 ps.close();
                 con.close();
-
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         });
-
         return panel;
     }
 
@@ -425,10 +406,8 @@ public class FullAdminDashboard extends JFrame {
                     b.setBackground(normal);
             }
         });
-
         // CLICK ACTION (keeps your logic)
         b.addActionListener(e -> {
-
             // reset all buttons in sidebar
             Container parent = b.getParent();
             for (Component c : parent.getComponents()) {
@@ -436,16 +415,13 @@ public class FullAdminDashboard extends JFrame {
                     c.setBackground(normal);
                 }
             }
-
             // set active color
             b.setBackground(active);
 
             cardLayout.show(cardPanel, card);
         });
-
         return b;
     }
-
     public static void main(String[] args) {
         new FullAdminDashboard();
     }
