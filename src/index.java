@@ -19,7 +19,8 @@ public class index extends JFrame {
     Color darkBlue = new Color(33 , 45 , 62);
     Color lightBlue = new Color(52 , 152 , 219);
     Color sidebarColor = new Color(44 , 62 , 80);
-    Color backgroundColor = new Color(248, 250, 252);
+    Color backgroundColor = new Color(248 , 250 , 252);
+    private String login;
 
     public index() {
         ImageIcon mm = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\regi.png");
@@ -32,14 +33,14 @@ public class index extends JFrame {
 
         // ========================= Header =========================
         JPanel topSection = new JPanel(new BorderLayout());
-        topSection.setBackground(new Color(44, 62, 80));
+        topSection.setBackground(new Color(44 , 62 , 80));
         topSection.setPreferredSize(new Dimension(0 , 80));
-        add(topSection, BorderLayout.NORTH);
+        add(topSection , BorderLayout.NORTH);
         JLabel welcomeLabel = new JLabel("Welcome to Online Course Registration System");
         welcomeLabel.setForeground(Color.WHITE);
         welcomeLabel.setFont(new Font("Segoe UI" , Font.BOLD , 26));
         welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        topSection.add(welcomeLabel, BorderLayout.CENTER);
+        topSection.add(welcomeLabel , BorderLayout.CENTER);
 
         // Logo (Left)
         ImageIcon logo = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-21 233222.png");
@@ -63,40 +64,40 @@ public class index extends JFrame {
         });
         // Profile (Right)
         JPanel rightSidePanel = new JPanel();
-        rightSidePanel.setLayout(new BoxLayout(rightSidePanel, BoxLayout.Y_AXIS));
+        rightSidePanel.setLayout(new BoxLayout(rightSidePanel , BoxLayout.Y_AXIS));
         rightSidePanel.setOpaque(false);
-        rightSidePanel.setBorder(new EmptyBorder(10, 0, 0, 20));
+        rightSidePanel.setBorder(new EmptyBorder(10 , 0 , 0 , 20));
 
         ImageIcon logo1 = new ImageIcon("C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-20 113447.png");
         JLabel profiles = new JLabel() {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                int size = Math.min(getWidth(), getHeight());
-                g2.setClip(new java.awt.geom.Ellipse2D.Double(0, 0, size, size));
-                g2.drawImage(logo1.getImage(), 0, 0, size, size, this);
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING , RenderingHints.VALUE_ANTIALIAS_ON);
+                int size = Math.min(getWidth() , getHeight());
+                g2.setClip(new java.awt.geom.Ellipse2D.Double(0 , 0 , size , size));
+                g2.drawImage(logo1.getImage() , 0 , 0 , size , size , this);
                 g2.dispose();
             }
         };
-        profiles.setPreferredSize(new Dimension(50, 50));
-        profiles.setMaximumSize(new Dimension(50, 50));
+        profiles.setPreferredSize(new Dimension(50 , 50));
+        profiles.setMaximumSize(new Dimension(50 , 50));
         profiles.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel pro = new JLabel("Biruk");
         pro.setForeground(Color.WHITE);
-        pro.setFont(new Font("SansSerif", Font.BOLD, 12));
+        pro.setFont(new Font("SansSerif" , Font.BOLD , 12));
         pro.setAlignmentX(Component.CENTER_ALIGNMENT);
         rightSidePanel.add(profiles);
         rightSidePanel.add(Box.createVerticalStrut(5));
         rightSidePanel.add(pro);
-        topSection.add(rightSidePanel, BorderLayout.EAST);
+        topSection.add(rightSidePanel , BorderLayout.EAST);
         // ========================= Sidebar=========================
         JPanel sideBar = new JPanel();
         sideBar.setBackground(sidebarColor);
         sideBar.setPreferredSize(new Dimension(220 , 0));
         sideBar.setLayout(new BoxLayout(sideBar , BoxLayout.Y_AXIS));
-        sideBar.setBorder(BorderFactory.createEmptyBorder(40 , 15, 20 , 15));
+        sideBar.setBorder(BorderFactory.createEmptyBorder(40 , 15 , 20 , 15));
         add(sideBar , BorderLayout.WEST);
 
         JLabel sideTitle = new JLabel("Course System");
@@ -104,13 +105,15 @@ public class index extends JFrame {
         sideTitle.setFont(new Font("Arial" , Font.BOLD , 22));
         sideTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JButton login = new JButton("Login");
-        JButton register = new JButton("Registration");
+        JButton login = new JButton("\uD83D\uDD11 Login");
+        JButton register = new JButton("\uD83C\uDD94 Registration");
         styleButton(login);
         styleButton(register);
+        Font emojiFont = new Font("Segoe UI Emoji", Font.PLAIN, 14);
+        login.setFont(emojiFont);
+        register.setFont(emojiFont);
         login.setAlignmentX(Component.CENTER_ALIGNMENT);
         register.setAlignmentX(Component.CENTER_ALIGNMENT);
-
         sideBar.add(sideTitle);
         sideBar.add(Box.createVerticalStrut(30));
         sideBar.add(login);
@@ -119,14 +122,14 @@ public class index extends JFrame {
         login.addActionListener(e -> {
             centerSection.removeAll();
             centerSection.setLayout(new BorderLayout());
-              centerSection.add(new LoginPage() , BorderLayout.CENTER);
+            centerSection.add(new LoginPage() , BorderLayout.CENTER);
             centerSection.revalidate();
             centerSection.repaint();
         });
         register.addActionListener(e -> {
             centerSection.removeAll();
             centerSection.setLayout(new BorderLayout());
-             centerSection.add(new RegistrationForm() , BorderLayout.CENTER);
+            centerSection.add(new RegistrationForm() , BorderLayout.CENTER);
             centerSection.revalidate();
             centerSection.repaint();
         });
@@ -147,8 +150,8 @@ public class index extends JFrame {
         footerLabel.setForeground(Color.WHITE);
         footerLabel.setFont(new Font("Arial" , Font.PLAIN , 24));
         footer.add(footerLabel);
-        mainPanel.add(footer, BorderLayout.SOUTH);
-        add(mainPanel, BorderLayout.CENTER);
+        mainPanel.add(footer , BorderLayout.SOUTH);
+        add(mainPanel , BorderLayout.CENTER);
         // Dropdown Logic
         JPopupMenu dropdown = new JPopupMenu();
         JMenuItem contactItem = new JMenuItem("Contact Us");
@@ -160,11 +163,13 @@ public class index extends JFrame {
         profiles.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 dropdown.show(profiles , 0 , profiles.getHeight());
+
             }
         });
         showHomeContent();
         setVisible(true);
     }
+
     public void showHomeContent() {
         centerSection.removeAll();
         JLabel title = new JLabel("Learn & Grow with Our Courses");
@@ -229,73 +234,99 @@ public class index extends JFrame {
 //            cardContainer.revalidate();
 //            cardContainer.repaint();
 //        }
-
         JPanel cardContainer = new JPanel();
-        centerSection.add(cardContainer, BorderLayout.CENTER);
+        centerSection.add(cardContainer , BorderLayout.CENTER);
         cardContainer.setOpaque(false);
-        cardContainer.setLayout(new GridLayout(0, 4, 10, 10));
-
+        cardContainer.setLayout(new GridLayout(0 , 4 , 10 , 10));
         JScrollPane scrollPane = new JScrollPane(centerSection);
         scrollPane.setBorder(null);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
-        add(scrollPane, BorderLayout.CENTER);
-        cardContainer.add(createModernCard("Java Programming", "C:\\Users\\HP\\Pictures\\Screenshots\\photo.png", "Master Java from basics to advanced."));
-        cardContainer.add(createModernCard("Web Development", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 131303.png", "Build responsive websites using React."));
-        cardContainer.add(createModernCard("UI/UX Design", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 131406.png", "Learn modern design principles."));
-        cardContainer.add(createModernCard("C++ Programming", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 225230.png", "Master C++ from basics to advanced."));
-        cardContainer.add(createModernCard("Database System", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 225945.png", "Master database from basics to advanced."));
-        cardContainer.add(createModernCard("NestJs Programming", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 225345.png", "Master nestjs from basic to advanced"));
-        cardContainer.add(createModernCard("software design", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 213750.png", "design from basic to advanced"));
-        cardContainer.add(createModernCard("computer architecture", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 213750.png", "Master computer architecturesfrom basic to advanced"));
-        cardContainer.add(createModernCard("Node Backend", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 213750.png", "Master nodebackend from basic to advanced"));
-        cardContainer.add(createModernCard("ReactJs", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 214315.png", "Master ReactJs from basic to advanced"));
-        cardContainer.add(createModernCard("C#", "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 214315.png", "MasterC# from basic to advanced"));
-        centerSection.add(heroPanel,BorderLayout.CENTER);
-        centerSection.add(cardContainer,BorderLayout.CENTER);
+        add(scrollPane , BorderLayout.CENTER);
+        cardContainer.add(createModernCard("Java Programming" , "C:\\Users\\HP\\Pictures\\Screenshots\\photo.png" ,
+            "Master Java from basics to advanced."));
+        cardContainer.add(createModernCard("Web Development" ,
+            "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 131303.png" ,
+            "Build responsive websites using React."));
+        cardContainer.add(
+            createModernCard("UI/UX Design" , "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 131406.png" ,
+                "Learn modern design principles."));
+        cardContainer.add(createModernCard("C++ Programming" ,
+            "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 225230.png" ,
+            "Master C++ from basics to advanced."));
+        cardContainer.add(createModernCard("Database System" ,
+            "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 225945.png" ,
+            "Master database from basics to advanced."));
+        cardContainer.add(createModernCard("NestJs Programming" ,
+            "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-11 225345.png" ,
+            "Master nestjs from basic to advanced"));
+        cardContainer.add(createModernCard("software design" ,
+            "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 213750.png" ,
+            "design from basic to advanced"));
+        cardContainer.add(createModernCard("computer architecture" ,
+            "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 213750.png" ,
+            "Master computer architecturesfrom basic to advanced"));
+        cardContainer.add(
+            createModernCard("Node Backend" , "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 213750.png" ,
+                "Master nodebackend from basic to advanced"));
+        cardContainer.add(
+            createModernCard("ReactJs" , "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 214315.png" ,
+                "Master ReactJs from basic to advanced"));
+        cardContainer.add(
+            createModernCard("C#" , "C:\\Users\\HP\\Pictures\\Screenshots\\Screenshot 2026-04-26 214315.png" ,
+                "MasterC# from basic to advanced"));
+        centerSection.add(heroPanel , BorderLayout.CENTER);
+        centerSection.add(cardContainer , BorderLayout.CENTER);
         centerSection.revalidate();
         centerSection.repaint();
     }
-    private JPanel createModernCard(String title, String imagePath, String description) {
+    private JPanel createModernCard(String title , String imagePath , String description) {
         JPanel card = new JPanel();
-        card.setPreferredSize(new Dimension(220, 300));
+        card.setPreferredSize(new Dimension(220 , 300));
         card.setBackground(Color.WHITE);
-        card.setLayout(new BorderLayout(10, 10));
-        card.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 230), 1));
-
+        card.setLayout(new BorderLayout(10 , 10));
+        card.setBorder(BorderFactory.createLineBorder(new Color(230 , 230 , 230) , 1));
         JLabel imgLabel = new JLabel();
         ImageIcon icon = new ImageIcon(imagePath);
-        Image img = icon.getImage().getScaledInstance(200, 120, Image.SCALE_SMOOTH);
+        Image img = icon.getImage().getScaledInstance(200 , 120 , Image.SCALE_SMOOTH);
         imgLabel.setIcon(new ImageIcon(img));
         imgLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JPanel textContent = new JPanel(new GridLayout(3, 1));
+        JPanel textContent = new JPanel(new GridLayout(3 , 1));
         textContent.setOpaque(false);
-        textContent.setBorder(new EmptyBorder(10, 10, 10, 10));
+        textContent.setBorder(new EmptyBorder(10 , 10 , 10 , 10));
 
         JLabel lblTitle = new JLabel(title);
-        lblTitle.setFont(new Font("Arial", Font.BOLD, 16));
+        lblTitle.setFont(new Font("Arial" , Font.BOLD , 16));
         JLabel lblDesc = new JLabel("<html><body style='width: 150px'>" + description + "</body></html>");
-        lblDesc.setFont(new Font("Arial", Font.PLAIN, 12));
+        lblDesc.setFont(new Font("Arial" , Font.PLAIN , 12));
         lblDesc.setForeground(Color.GRAY);
-        JButton btnEnroll = new JButton("Enroll Now");
-        btnEnroll.setBackground(new Color(46, 204, 113));
-        btnEnroll.setForeground(Color.WHITE);
+        JButton enrollment = new JButton("Enroll Now");
+        enrollment.setBackground(new Color(46 , 204 , 113));
+        enrollment.setForeground(Color.WHITE);
         textContent.add(lblTitle);
         textContent.add(lblDesc);
-        textContent.add(btnEnroll);
-        card.add(imgLabel, BorderLayout.NORTH);
-        card.add(textContent, BorderLayout.CENTER);
+        textContent.add(enrollment);
+        card.add(imgLabel , BorderLayout.NORTH);
+        card.add(textContent , BorderLayout.CENTER);
         return card;
+//        enrollment.addActionListener(e -> {
+//            int studentId = 101;
+//            String courseName = "Java Programming";
+//            double price = 1500.00;
+//            Payment.showPaymentGateway(studentId , courseName , price);
+//        });
+//
     }
     public void styleButton(JButton button) {
-        button.setBackground(lightBlue);
+       button.setBackground(lightBlue);
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setFont(new Font("Segoe UI" , Font.BOLD , 15));
         button.setMaximumSize(new Dimension(180 , 45));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        button.setBorderPainted(false);
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new index());

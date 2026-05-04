@@ -13,9 +13,7 @@ public class StudentPanel extends JPanel {
         setLayout(new BorderLayout(15, 15));
         setBackground(new Color(245, 246, 250));
 
-        model = new DefaultTableModel(
-                new String[]{"ID", "Name", "Email", "Department", "Status"}, 0
-        );
+        model = new DefaultTableModel(new String[]{"ID", "Name", "Email", "Gender", "Status"}, 0);
 
         table = new JTable(model);
         JScrollPane scroll = new JScrollPane(table);
@@ -38,7 +36,6 @@ public class StudentPanel extends JPanel {
         add(btnPanel, BorderLayout.SOUTH);
 
         loadStudents();
-
         blockBtn.addActionListener(e -> updateStatus("BLOCKED"));
         unblockBtn.addActionListener(e -> updateStatus("ACTIVE"));
         deleteBtn.addActionListener(e -> deleteStudent());
@@ -46,27 +43,19 @@ public class StudentPanel extends JPanel {
 
     // ======================================================
     private void updateStatus(String status) {
-
         int row = table.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this, "Select a student first!");
             return;
         }
-
         int id = Integer.parseInt(model.getValueAt(row, 0).toString());
-
         try {
             Connection con = DBConnection.getConnection();
-
-            PreparedStatement ps = con.prepareStatement(
-                    "UPDATE students SET status=? WHERE id=?"
+            PreparedStatement ps = con.prepareStatement("UPDATE students SET status=? WHERE id=?"
             );
-
             ps.setString(1, status);
             ps.setInt(2, id);   // ✅ FIXED HERE
-
             int result = ps.executeUpdate();
-
             if (result > 0) {
                 JOptionPane.showMessageDialog(this, "Student " + status);
             } else {
@@ -93,7 +82,6 @@ public class StudentPanel extends JPanel {
 
         try {
             Connection con = DBConnection.getConnection();
-
             PreparedStatement ps = con.prepareStatement(
                     "DELETE FROM students WHERE id=?"
             );
@@ -120,27 +108,22 @@ public class StudentPanel extends JPanel {
 
         try {
             Connection con = DBConnection.getConnection();
-
             model.setRowCount(0);
-
             ResultSet rs = con.createStatement()
                     .executeQuery("SELECT * FROM students ORDER BY id DESC");
-
             while (rs.next()) {
                 model.addRow(new Object[]{
                         rs.getString("id"),
                         rs.getString("name"),
                         rs.getString("email"),
-                        rs.getString("department"),
+                        rs.getString("gender"),
                         rs.getString("status")
                 });
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     // ======================================================
     private void styleButton(JButton btn, Color color) {
         btn.setBackground(color);

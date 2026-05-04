@@ -153,7 +153,6 @@ class StudentDashboard extends JFrame {
             btn.setBackground(new Color(52, 73, 94));
             btn.setFocusPainted(false);
             btn.setBorderPainted(false);
-
             //card name
             String cardName = item.contains(" ") ? item.substring(3) : item;
             btn.addActionListener(e -> cardLayout.show(mainContent, cardName));
@@ -338,16 +337,26 @@ class StudentDashboard extends JFrame {
         regBtn.setBackground(new Color(46, 204, 113));
         regBtn.setForeground(Color.WHITE);
         panel.add(regBtn, BorderLayout.SOUTH);
+
         regBtn.addActionListener(event -> {
-            int row = table.getSelectedRow();
-            if (row != -1) {
-                String id = table.getValueAt(row, 0).toString();
-                String name = table.getValueAt(row, 1).toString();
-                String duration = table.getValueAt(row, 2).toString();
-                String price = table.getValueAt(row, 3).toString();
-                insertToDatabase(id, name, duration, price);
-            } else {
-                JOptionPane.showMessageDialog(null, "First select course");
+            try {
+                int row = table.getSelectedRow();
+                if (row != -1) {
+                    String id = table.getValueAt(row , 0).toString();
+                    String name = table.getValueAt(row , 1).toString();
+                    String duration = table.getValueAt(row , 2).toString();
+                    String pricRaw = table.getValueAt(row , 3).toString();
+                    double price = Double.parseDouble(pricRaw.replace(" ETB" , "").trim());
+                    String currentStudentId = "wd123";
+
+                   // insertToDatabase(id , name , duration , String.valueOf(price));
+                    Payment.showPaymentGateway(currentStudentId , name , price);
+                } else {
+                    JOptionPane.showMessageDialog(null , "First select course");
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,"ERROR"+e.getMessage());
             }
         });
         return panel;
@@ -359,9 +368,9 @@ class StudentDashboard extends JFrame {
         String query = "INSERT INTO registered_courses(course_id, course_name, duration, price) VALUES(?, ?, ?, ?)";
         try (Connection connect = DriverManager.getConnection(url, dbUser, dbPass)) {
             PreparedStatement pro = connect.prepareStatement(query);
-            pro.setString(1, id);
-            pro.setString(2, name);
-            pro.setString(3, duration);
+            pro.setString(0, id);
+            pro.setString(1, name);
+            pro.setString(2, duration);
             pro.setString(4, price);
             int result = pro.executeUpdate();
             if (result > 0) {

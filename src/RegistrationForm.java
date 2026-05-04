@@ -80,16 +80,6 @@ public class RegistrationForm extends JPanel {
         phoneField = new JTextField(20);
         gbc.gridx = 1;
         add(phoneField, gbc);
-
-        // Course
-        JLabel courseLabel = new JLabel("Course:");
-        gbc.gridx = 0; gbc.gridy = 6;
-        add(courseLabel, gbc);
-
-        courseBox = new JComboBox<>(new String[]{"Java", "Web Dev", "Database", "Networking"});
-        gbc.gridx = 1;
-        add(courseBox, gbc);
-
         // Submit Button
         JButton submitButton = new JButton("Register");
         submitButton.setBackground(lightBlue);
@@ -109,45 +99,41 @@ public class RegistrationForm extends JPanel {
             genderBox.setSelectedIndex(0);
             confirmPasswordField.setText("");
             passwordField.setText("");
-            courseBox.setSelectedIndex(0);
             phoneField.setText("");
         });
         submitButton.addActionListener(e -> {
-
             String name = usernameField.getText();
             String email = emailField.getText();
             String phone = phoneField.getText();
             String password = new String(passwordField.getPassword());
             String confirm = new String(confirmPasswordField.getPassword());
-            String course = courseBox.getSelectedItem().toString();
             String gender = genderBox.getSelectedItem().toString();
-
             if (!password.equals(confirm)) {
                 JOptionPane.showMessageDialog(null, "Passwords do not match!");
                 return;
             }
-
             try {
                 Connection con = DBConnection.getConnection();
-
-                PreparedStatement ps = con.prepareStatement(
-                        "INSERT INTO students (name, email, password, department, status) VALUES (?, ?, ?, ?, 'ACTIVE')"
+                PreparedStatement ps = con.prepareStatement("INSERT INTO students(name, email, password, gender, status) VALUES (?, ?, ?, ?, 'ACTIVE')"
                 );
-
                 ps.setString(1, name);
                 ps.setString(2, email);
                 ps.setString(3, password);
-                ps.setString(4, course);
-
+                ps.setString(4,gender);
                 ps.executeUpdate();
-
                 JOptionPane.showMessageDialog(null, "Registration Successful!");
+                usernameField.setText("");
+                emailField.setText("");
+                passwordField.setText("");
+                genderBox.setSelectedIndex(0);
+                confirmPasswordField.setText("");
+                phoneField.setText("");
+
 
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "DB Error: " + ex.getMessage());
             }
-
         });
     }
     public static void main(String[] args) {

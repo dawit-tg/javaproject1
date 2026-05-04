@@ -65,18 +65,18 @@ class LoginPage extends JPanel {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = usertext.getText();
+                String name = usertext.getText();
                 String inputPass = new String(passwordField.getPassword());
-               if (username.isEmpty() || inputPass.isEmpty()) {
+               if (name.isEmpty() || inputPass.isEmpty()) {
                     JOptionPane.showMessageDialog(null , "username and password field");
-                }else if (username.equalsIgnoreCase("Admin") && inputPass.equalsIgnoreCase("123")) {
+                }else if (name.equalsIgnoreCase("Admin") && inputPass.equalsIgnoreCase("123")) {
                     JOptionPane.showMessageDialog(null , "Welcome Admin");
                     new FullAdminDashboard().setVisible(true);
                     usertext.setText("");
                     passwordField.setText("");
                     //LoginPage.this.dispose();
                 } else{
-                   fromDatabase(username,inputPass);
+                   fromDatabase(name,inputPass);
                }
             }
         });
@@ -85,7 +85,7 @@ class LoginPage extends JPanel {
             String url = "jdbc:postgresql://localhost:5432/onlinecourse";
             String dbUser = "postgres";
             String dbPass = "1453";
-            String pst = "SELECT * FROM register WHERE username = ? AND password = ?";
+            String pst = "SELECT * FROM students WHERE name = ? AND password = ?";
             try {
                 Class.forName("org.postgresql.Driver");
                 try (Connection conn = DriverManager.getConnection(url , dbUser , dbPass)) {
