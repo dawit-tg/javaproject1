@@ -135,10 +135,10 @@ public class FullAdminDashboard extends JFrame {
         logo.setFont(new Font("Segoe UI", Font.BOLD, 18));
         logo.setBorder(new EmptyBorder(25, 10, 25, 10));
         sidebar.add(logo);
-        sidebar.add(createMenuButton("\uD83C\uDFE0 Dashboard", "Dash"));
-        sidebar.add(createMenuButton("\uD83D\uDCDA Courses", "Course"));
-        sidebar.add(createMenuButton("\uD83D\uDC65 Students", "Student"));
-        sidebar.add(createMenuButton("\uD83D\uDCCA Reports","Report"));
+        sidebar.add(createMenuButton("Dashboard", "Dash"));
+        sidebar.add(createMenuButton("Courses", "Course"));
+        sidebar.add(createMenuButton("Students", "Student"));
+        sidebar.add(createMenuButton("Reports","Report"));
 
 
         JButton logoutBtn = new JButton("\uD83D\uDD34 Logout");
@@ -588,7 +588,6 @@ public class FullAdminDashboard extends JFrame {
             }
             // set active color
             b.setBackground(active);
-
             cardLayout.show(cardPanel, card);
         });
         return b;
@@ -615,13 +614,11 @@ public class FullAdminDashboard extends JFrame {
         downloadBtn.setBackground(new Color(52, 152, 219));
         downloadBtn.setForeground(Color.WHITE);
         downloadBtn.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Generating PDF Report... Please Wait.");
+            JOptionPane.showMessageDialog(this, "generate PDF Report... Please Wait.");
         });
         panel.add(downloadBtn, BorderLayout.SOUTH);
         return panel;
     }
-
-
     public static void main(String[] args) {
         new FullAdminDashboard();
     }

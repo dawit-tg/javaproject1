@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.*;
 class LoginPage extends JPanel {
     private JTextField usertext;
@@ -53,14 +55,33 @@ class LoginPage extends JPanel {
         button.setFont(new Font("Segoe UI" , Font.BOLD , 16));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         panel.add(button);
-        JLabel re = new JLabel("Register Now" , SwingConstants.CENTER);
+        JLabel re = new JLabel("<html><u>Don't have an account? Register now</u></html>" , SwingConstants.CENTER);
         re.setBounds(0 , 350 , 350 , 20);
         re.setForeground(new Color(0 , 102 , 204));
         re.setCursor(new Cursor(Cursor.HAND_CURSOR));
+       re.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(re);
         add(mainPanel);
         mainPanel.add(panel);
         setVisible(true);
+        re.addMouseListener(new MouseAdapter() {
+                                public void mouseClicked(MouseEvent e) {
+                                  //  showRegistrationForm();
+                                }
+                            });
+//        JLabel loginLink = new JLabel("<html><u>Already have an account? Login</u></html>");
+//        loginLink.setForeground(Color.BLUE);
+//        loginLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
+//        loginLink.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        loginLink.addMouseListener(new MouseAdapter() {
+//            public void mouseClicked(MouseEvent e) {
+//                showLoginForm();
+//            }
+//
+//            private void showLoginForm() {
+//            }
+//        });
+
         /// //////////////////////////////////////////////database connectivity start this////////////////////////////////////
         button.addActionListener(new ActionListener() {
             @Override
@@ -81,7 +102,11 @@ class LoginPage extends JPanel {
             }
         });
     }
-        private void fromDatabase (String user,String pass) {
+
+    public static void createAndShowUI() {
+    }
+
+    private void fromDatabase (String user,String pass) {
             String url = "jdbc:postgresql://localhost:5432/onlinecourse";
             String dbUser = "postgres";
             String dbPass = "1453";

@@ -15,7 +15,7 @@ public class Payment {
         // UI Elements
         payDialog.add(new JLabel("Enrollment for: " + courseName , SwingConstants.CENTER));
         payDialog.add(new JLabel("Amount to Pay: " + price + " ETB" , SwingConstants.CENTER));
-        JLabel bankInfo = new JLabel("CBE: 1000123456789 (Uni-Admin)" , SwingConstants.CENTER);
+        JLabel bankInfo = new JLabel("CBE: 1000123456789" , SwingConstants.CENTER);
         JLabel bankinfo1=new JLabel("Telebirr:0995878890)",SwingConstants.CENTER);
         bankInfo.setForeground(Color.BLUE);
         payDialog.add(bankInfo);
@@ -36,7 +36,7 @@ public class Payment {
                 JOptionPane.showMessageDialog(payDialog , "please enter transaction ID!");
             } else {
                 if (saveToDatabase(studentId , courseName , refNo , price)) {
-                    JOptionPane.showMessageDialog(payDialog , "payment registered! admin is approved open course።");
+                    JOptionPane.showMessageDialog(payDialog , "payment registered! admin is approved Wait..");
                     payDialog.dispose();
                 }
             }

@@ -128,8 +128,6 @@ public class RegistrationForm extends JPanel {
                 genderBox.setSelectedIndex(0);
                 confirmPasswordField.setText("");
                 phoneField.setText("");
-
-
             } catch (Exception ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "DB Error: " + ex.getMessage());

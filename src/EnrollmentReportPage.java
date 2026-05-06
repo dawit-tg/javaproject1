@@ -13,13 +13,12 @@
 //    private DefaultTableModel tableModel;
 //    private JTextField searchField;
 //    private JLabel totalEnrollmentsLabel;
+//
 //    public JPanel EnrollmentReportPage() {
-//        // ዋናው ሌይአውት
 //        setLayout(new BorderLayout(15 , 15));
 //        setBackground(new Color(245 , 247 , 250));
 //        setBorder(BorderFactory.createEmptyBorder(20 , 20 , 20 , 20));
 //
-//        // --- 1. Header Section (Title and Statistics) ---
 //        JPanel headerPanel = new JPanel(new BorderLayout());
 //        headerPanel.setOpaque(false);
 //
@@ -34,7 +33,6 @@
 //
 //        add(headerPanel , BorderLayout.NORTH);
 //
-//        // --- 2. Filter Section (ለመፈለጊያ) ---
 //        JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 //        filterPanel.setOpaque(false);
 //        filterPanel.add(new JLabel("Search Student/Course: "));
@@ -45,13 +43,12 @@
 //        JButton refreshBtn = new JButton("Refresh Data");
 //        filterPanel.add(refreshBtn);
 //
-//        // --- 3. Table Section (ሪፖርቱ የሚታይበት) ---
 //        String[] columns = {"Enrollment ID" , "Student Name" , "Email" , "Course Name" , "Registration Date" , "Status"};
 //        tableModel = new DefaultTableModel(columns , 0) {
 //            @Override
 //            public boolean isCellEditable(int row ,
 //                                          int column) {
-//                return false; // ሰንጠረዡ በቀጥታ እንዳይቀየር
+//                return false;
 //            }
 //        };
 //
@@ -59,7 +56,6 @@
 //        reportTable.setRowHeight(30);
 //        reportTable.getTableHeader().setFont(new Font("Arial" , Font.BOLD , 14));
 //
-//        // ዳታ ለመፈለግ (Search) የሚረዳ logic
 //        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
 //        reportTable.setRowSorter(sorter);
 //        searchField.addKeyListener(new KeyAdapter() {
@@ -80,43 +76,42 @@
 //        scrollPane.setBorder(border);
 //        add(scrollPane , BorderLayout.CENTER);
 //
-//        // --- 4. Bottom Action Section ---
 //        JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 //        actionPanel.setOpaque(false);
-//    }
 //
-////        DefaultTableModel model = new DefaultTableModel(cols, 0);
-////        JButton exportBtn = new JButton("Export to Excel/PDF");
-////        JButton blockStudentBtn = new JButton("Block Student Account");
-////        blockStudentBtn.setBackground(new Color(231, 76, 60));
-////        blockStudentBtn.setForeground(Color.WHITE);
-////
-////        actionPanel.add(exportBtn);
-////        actionPanel.add(blockStudentBtn);
-////        add(actionPanel, BorderLayout.SOUTH);
-////        loadSampleData();
-////
-////        JTable table = new JTable(model);
-////        table.setRowHeight(30);
-////        panel.add(new JScrollPane(table), BorderLayout.CENTER);
-////        JPanel actionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-////        JButton blockBtn = new JButton("Toggle Block Status");
-////        blockBtn.setBackground(new Color(231, 76, 60));
-////        blockBtn.setForeground(Color.WHITE);
-////        blockStudentBtn.addActionListener(e -> {
-////            int row = table.getSelectedRow();
-////            if(row != -1) {
-////                String currentStatus = model.getValueAt(row, 3).toString();
-////                String newStatus = currentStatus.equals("Active") ? "Blocked" : "Active";
-////                model.setValueAt(newStatus, row, 3);
-////            } else {
-////                JOptionPane.showMessageDialog(this, "Please select a student first!");
-////            }
-////        });
-////        actionPanel.add(blockStudentBtn);
-////        actionPanel.add(actionPanel, BorderLayout.SOUTH);
-////        return actionPanel;
-////    }
+//
+//        DefaultTableModel model = new DefaultTableModel();
+//        JButton exportBtn = new JButton("Export to Excel/PDF");
+//        JButton blockStudentBtn = new JButton("Block Student Account");
+//        blockStudentBtn.setBackground(new Color(231, 76, 60));
+//        blockStudentBtn.setForeground(Color.WHITE);
+//
+//        actionPanel.add(exportBtn);
+//        actionPanel.add(blockStudentBtn);
+//        add(actionPanel, BorderLayout.SOUTH);
+//        loadSampleData();
+//
+//        JTable table = new JTable(model);
+//        table.setRowHeight(30);
+//        actionPanel.add(new JScrollPane(table), BorderLayout.CENTER);
+//        JPanel actionPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+//        JButton blockBtn = new JButton("Toggle Block Status");
+//        blockBtn.setBackground(new Color(231, 76, 60));
+//        blockBtn.setForeground(Color.WHITE);
+//        blockStudentBtn.addActionListener(e -> {
+//            int row = table.getSelectedRow();
+//            if(row != -1) {
+//                String currentStatus = model.getValueAt(row, 3).toString();
+//                String newStatus = currentStatus.equals("Active") ? "Blocked" : "Active";
+//                model.setValueAt(newStatus, row, 3);
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Please select a student first!");
+//            }
+//        });
+//        actionPanel.add(blockStudentBtn);
+//        actionPanel.add(actionPanel, BorderLayout.SOUTH);
+//        return actionPanel;
+//    }
 //    private void loadSampleData() {
 //        Object[][] data = {
 //            {"E-001", "Biruk", "biruk@email.com", "Java Programming", "2026-03-12", "Active"},
@@ -131,7 +126,6 @@
 //        totalEnrollmentsLabel.setText("Total Enrollments: " + tableModel.getRowCount());
 //    }
 //
-//    // ለአድሚን ፍሰቱ ዋናውን Frame ለመሞከር
 //    public static void main(String[] args) {
 //        JFrame frame = new JFrame("Admin - Enrollment Reports");
 //        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -139,5 +133,6 @@
 //        frame.add(new EnrollmentReportPage());
 //        frame.setLocationRelativeTo(null);
 //        frame.setVisible(true);
+//        new EnrollmentReportPage();
 //    }
 //}

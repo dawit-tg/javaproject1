@@ -1,40 +1,4 @@
 
-
-//    private JPanel createMyCoursesPanel() {
-//        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//        panel.add(new JLabel(""));
-//        return panel;
-//    }
-//    private JScrollPane createHelpPanel() {
-//        JPanel panel = new JPanel();
-//        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-//        panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
-//        panel.setBackground(Color.WHITE);
-//        // Header
-//        JLabel title = new JLabel("Help center");
-//        title.setFont(new Font("Arial", Font.BOLD, 24));
-//        title.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        panel.add(title);
-//        panel.add(Box.createRigidArea(new Dimension(0, 20)));
-//        String[][] faqs = {
-//            {"how to course register?", "Course Catalog page choose interest።"},
-//            {"can you change password?", "yes፣ Settings page change ።"},
-//            {"dont'see register course?", "please Logout try login or Admin contact።"}
-//        };
-//        for (String[] faq : faqs) {
-//            JLabel question = new JLabel("Quastion፡ " + faq[0]);
-//            question.setFont(new Font("Arial", Font.BOLD, 14));
-//            JLabel answer = new JLabel("Response፡ " + faq[1]);
-//            answer.setFont(new Font("Arial", Font.PLAIN, 13));
-//            answer.setForeground(Color.GRAY);
-//
-//            panel.add(question);
-//            panel.add(answer);
-//            panel.add(Box.createRigidArea(new Dimension(0, 15)));
-//        }
-//        return new JScrollPane(panel);
-//    }
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -281,18 +245,18 @@ class StudentDashboard extends JFrame {
         panel.add(createStatCard("Pending Registrations", "10", new Color(231, 76, 60)));
         panel.add(createStatCard("List", "5", new Color(220, 76, 30)));
         panel.add(createStatCard("Complete certificate", "5", new Color(231, 166, 80)));
-        panel.add(createStatCard("Total Courses", "12", new Color(52, 152, 219)));
-        panel.add(createStatCard("My Courses", "3", new Color(46, 204, 113)));
-        panel.add(createStatCard("New Messages", "5", new Color(231, 76, 60)));
-        panel.add(createStatCard("Pending Registrations", "10", new Color(231, 76, 60)));
-        panel.add(createStatCard("List", "5", new Color(220, 76, 30)));
-        panel.add(createStatCard("Complete certificate", "5", new Color(231, 166, 80)));
-        panel.add(createStatCard("Total Courses", "12", new Color(52, 152, 219)));
-        panel.add(createStatCard("My Courses", "3", new Color(46, 204, 113)));
-        panel.add(createStatCard("New Messages", "5", new Color(231, 76, 60)));
-        panel.add(createStatCard("Pending Registrations", "10", new Color(231, 76, 60)));
-        panel.add(createStatCard("List", "5", new Color(220, 76, 30)));
-        panel.add(createStatCard("Complete certificate", "5", new Color(231, 166, 80)));
+//        panel.add(createStatCard("Total Courses", "12", new Color(52, 152, 219)));
+//        panel.add(createStatCard("My Courses", "3", new Color(46, 204, 113)));
+//        panel.add(createStatCard("New Messages", "5", new Color(231, 76, 60)));
+//        panel.add(createStatCard("Pending Registrations", "10", new Color(231, 76, 60)));
+//        panel.add(createStatCard("List", "5", new Color(220, 76, 30)));
+//        panel.add(createStatCard("Complete certificate", "5", new Color(231, 166, 80)));
+//        panel.add(createStatCard("Total Courses", "12", new Color(52, 152, 219)));
+//        panel.add(createStatCard("My Courses", "3", new Color(46, 204, 113)));
+//        panel.add(createStatCard("New Messages", "5", new Color(231, 76, 60)));
+//        panel.add(createStatCard("Pending Registrations", "10", new Color(231, 76, 60)));
+//        panel.add(createStatCard("List", "5", new Color(220, 76, 30)));
+//        panel.add(createStatCard("Complete certificate", "5", new Color(231, 166, 80)));
         return panel;
 
     }
