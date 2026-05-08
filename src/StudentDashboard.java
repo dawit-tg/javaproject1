@@ -44,7 +44,7 @@ class StudentDashboard extends JFrame {
         headerpanel.add(profile , BorderLayout.WEST);
         profile.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                new index().setVisible(true);
+                new index("studentName").setVisible(true);
             }
         });
         //center
@@ -222,7 +222,7 @@ class StudentDashboard extends JFrame {
             int a = JOptionPane.showConfirmDialog(this, "Logout?");
             if (a == JOptionPane.YES_OPTION) {
                 this.dispose();
-                new index().setVisible(true);
+                new index("Student").setVisible(true);
             }
         });
         menu.add(logout);

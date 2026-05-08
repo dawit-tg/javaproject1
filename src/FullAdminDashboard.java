@@ -149,7 +149,7 @@ public class FullAdminDashboard extends JFrame {
         logoutBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         logoutBtn.addActionListener(e -> {
             dispose();
-            new index();
+            new index("Admin");
         });
         sidebar.add(Box.createVerticalGlue());
         sidebar.add(logoutBtn);
