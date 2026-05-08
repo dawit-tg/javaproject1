@@ -4,9 +4,9 @@ import java.sql.DriverManager;
 public class DBConnection {
     public static Connection getConnection() {
         try {
-            String url = "jdbc:postgresql://localhost:5432/onlinecourse";
+            String url = "jdbc:postgresql://localhost:5432/javaPro";
             String user = "postgres";
-            String password = "1453";
+            String password = "devo@123";
             return DriverManager.getConnection(url, user, password);
         } catch (Exception e) {
             e.printStackTrace();
